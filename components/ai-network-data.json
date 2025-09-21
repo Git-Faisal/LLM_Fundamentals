@@ -1,0 +1,146 @@
+{
+  "hierarchicalData": {
+    "ai": {
+      "id": "ai",
+      "name": "Artificial Intelligence",
+      "type": "core",
+      "size": 75,
+      "expanded": true,
+      "visible": true,
+      "children": [
+        "ml", "cv", "nlp", "robotics", "kr", "planning", "multiagent"
+      ]
+    },
+    "ml": {
+      "id": "ml",
+      "name": "Machine Learning",
+      "type": "major",
+      "size": 60,
+      "expanded": false,
+      "visible": true,
+      "children": [
+        { "id": "dl", "name": "Deep Learning", "type": "specialized", "size": 45 },
+        { "id": "rl", "name": "Reinforcement Learning", "type": "specialized", "size": 38 },
+        { "id": "supervised", "name": "Supervised Learning", "type": "niche", "size": 30 },
+        { "id": "unsupervised", "name": "Unsupervised Learning", "type": "niche", "size": 30 },
+        { "id": "semisupervised", "name": "Semi-Supervised Learning", "type": "niche", "size": 27 },
+        { "id": "transfer", "name": "Transfer Learning", "type": "niche", "size": 27 },
+        { "id": "metalearning", "name": "Meta-Learning", "type": "niche", "size": 24 }
+      ]
+    },
+    "cv": {
+      "id": "cv",
+      "name": "Computer Vision",
+      "type": "major",
+      "size": 55,
+      "expanded": false,
+      "visible": true,
+      "children": [
+        { "id": "dl", "name": "Deep Learning", "type": "specialized", "size": 45 },
+        { "id": "classification", "name": "Image Classification", "type": "niche", "size": 27 },
+        { "id": "detection", "name": "Object Detection", "type": "niche", "size": 27 },
+        { "id": "segmentation", "name": "Semantic Segmentation", "type": "niche", "size": 24 },
+        { "id": "3dvision", "name": "3D Vision", "type": "niche", "size": 24 },
+        { "id": "videoanalysis", "name": "Video Analysis", "type": "niche", "size": 24 }
+      ]
+    },
+    "nlp": {
+      "id": "nlp",
+      "name": "Natural Language Processing",
+      "type": "major",
+      "size": 55,
+      "expanded": false,
+      "visible": true,
+      "children": [
+        { "id": "dl", "name": "Deep Learning", "type": "specialized", "size": 45 },
+        { "id": "translation", "name": "Machine Translation", "type": "niche", "size": 27 },
+        { "id": "qa", "name": "Question Answering", "type": "niche", "size": 27 },
+        { "id": "generation", "name": "Text Generation", "type": "niche", "size": 27 },
+        { "id": "extraction", "name": "Information Extraction", "type": "niche", "size": 24 },
+        { "id": "sentiment", "name": "Sentiment Analysis", "type": "niche", "size": 24 }
+      ]
+    },
+    "robotics": {
+      "id": "robotics",
+      "name": "Robotics",
+      "type": "major",
+      "size": 55,
+      "expanded": false,
+      "visible": true,
+      "children": [
+        { "id": "hci", "name": "Human-Computer Interaction", "type": "specialized", "size": 38 },
+        { "id": "motionplanning", "name": "Motion Planning", "type": "niche", "size": 27 },
+        { "id": "manipulation", "name": "Manipulation", "type": "niche", "size": 27 },
+        { "id": "robotperception", "name": "Robot Perception", "type": "niche", "size": 24 },
+        { "id": "slam", "name": "SLAM", "type": "niche", "size": 24 },
+        { "id": "hri", "name": "Human-Robot Interaction", "type": "niche", "size": 24 }
+      ]
+    },
+    "kr": {
+      "id": "kr",
+      "name": "Knowledge Representation",
+      "type": "major",
+      "size": 45,
+      "expanded": false,
+      "visible": true,
+      "children": [
+        { "id": "reasoning", "name": "Automated Reasoning", "type": "specialized", "size": 38 },
+        { "id": "cognitive", "name": "Cognitive Architectures", "type": "specialized", "size": 38 },
+        { "id": "ontologies", "name": "Ontologies", "type": "niche", "size": 24 },
+        { "id": "logicprog", "name": "Logic Programming", "type": "niche", "size": 24 },
+        { "id": "semanticnets", "name": "Semantic Networks", "type": "niche", "size": 24 },
+        { "id": "knowledgegraphs", "name": "Knowledge Graphs", "type": "niche", "size": 27 }
+      ]
+    },
+    "planning": {
+      "id": "planning",
+      "name": "Planning & Search",
+      "type": "major",
+      "size": 45,
+      "expanded": false,
+      "visible": true,
+      "children": [
+        { "id": "reasoning", "name": "Automated Reasoning", "type": "specialized", "size": 38 }
+      ]
+    },
+    "multiagent": {
+      "id": "multiagent",
+      "name": "Multi-Agent Systems",
+      "type": "major",
+      "size": 45,
+      "expanded": false,
+      "visible": true,
+      "children": [
+        { "id": "rl", "name": "Reinforcement Learning", "type": "specialized", "size": 38 }
+      ]
+    }
+  },
+  "baseConnections": [
+    { "source": "ai", "target": "ml", "strength": "strong" },
+    { "source": "ai", "target": "cv", "strength": "strong" },
+    { "source": "ai", "target": "nlp", "strength": "strong" },
+    { "source": "ai", "target": "robotics", "strength": "strong" },
+    { "source": "ai", "target": "kr", "strength": "strong" },
+    { "source": "ai", "target": "planning", "strength": "strong" },
+    { "source": "ai", "target": "multiagent", "strength": "normal" },
+    { "source": "ml", "target": "dl", "strength": "strong" },
+    { "source": "ml", "target": "rl", "strength": "strong" },
+    { "source": "ml", "target": "cv", "strength": "strong" },
+    { "source": "ml", "target": "nlp", "strength": "strong" },
+    { "source": "cv", "target": "dl", "strength": "strong" },
+    { "source": "cv", "target": "robotics", "strength": "strong" },
+    { "source": "nlp", "target": "dl", "strength": "strong" },
+    { "source": "nlp", "target": "kr", "strength": "normal" },
+    { "source": "robotics", "target": "planning", "strength": "strong" },
+    { "source": "robotics", "target": "cv", "strength": "strong" },
+    { "source": "robotics", "target": "multiagent", "strength": "normal" },
+    { "source": "kr", "target": "reasoning", "strength": "strong" },
+    { "source": "kr", "target": "planning", "strength": "normal" },
+    { "source": "planning", "target": "reasoning", "strength": "normal" },
+    { "source": "multiagent", "target": "rl", "strength": "normal" },
+    { "source": "cognitive", "target": "kr", "strength": "normal" },
+    { "source": "cognitive", "target": "planning", "strength": "normal" },
+    { "source": "hci", "target": "cv", "strength": "normal" },
+    { "source": "hci", "target": "nlp", "strength": "normal" }
+  ]
+}

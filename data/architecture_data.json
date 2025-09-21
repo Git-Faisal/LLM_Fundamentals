@@ -1,0 +1,242 @@
+{
+  "architectures": [
+    {
+      "id": "transformer",
+      "order": 1,
+      "title": "Transformer Architecture",
+      "description": "Parallel processing architecture for sequence modeling",
+      "classDefinition": "class TransformerModel(input_sequence):",
+      "codeSteps": [
+        {
+          "stepId": "tokenization",
+          "lines": [
+            "# Step 1: Convert text to tokens",
+            "tokens = tokenize(input_sequence)  # \"Hello world\" → [101, 7592, 2088]",
+            "# Split text into subword pieces and map to unique IDs the model recognizes"
+          ]
+        },
+        {
+          "stepId": "embedding",
+          "lines": [
+            "# Step 2: Convert tokens to embeddings",
+            "embeddings = embedding_lookup(tokens)  # [seq_len, d_model] → [3, 768]",
+            "# Each token ID becomes a dense vector: 101 → [-0.2, 0.8, 0.1, ...768 numbers]",
+            "# These vectors capture semantic meaning learned during training"
+          ]
+        },
+        {
+          "stepId": "positional",
+          "lines": [
+            "# Step 3: Add positional information",
+            "x = embeddings + positional_encoding(seq_length)",
+            "# Add sine/cosine patterns so model knows \"Hello\" comes before \"world\"",
+            "# Without this, attention would be position-blind"
+          ]
+        },
+        {
+          "stepId": "transformer-layers",
+          "lines": [
+            "# Step 4: Process through N transformer blocks",
+            "for layer_i in range(num_layers):"
+          ]
+        },
+        {
+          "stepId": "attention",
+          "lines": [
+            "# Multi-Head Self-Attention: tokens look at each other",
+            "Q, K, V = create_qkv_matrices(x)  # Query, Key, Value",
+            "# Transform each token into 3 roles: what it's looking for (Q),",
+            "# what it offers (K), and what it contains (V)",
+            "",
+            "# Calculate attention scores for all positions simultaneously",
+            "attention_scores = softmax(Q @ K.T / sqrt(d_k))",
+            "# How much should each token pay attention to every other token?",
+            "# Results in probability matrix: \"world\" looks 90% at \"Hello\", 10% at itself",
+            "attended_values = attention_scores @ V",
+            "# Mix the Value vectors based on attention weights - \"world\" gets mostly \"Hello\"'s info",
+            "",
+            "# → Multi-head: run 8-12 attention heads in parallel",
+            "multi_head_output = concat_heads(attended_values)",
+            "# Each head learns different relationship types: syntax, semantics, coreference, etc."
+          ]
+        },
+        {
+          "stepId": "feedforward",
+          "lines": [
+            "# Feed-Forward Network: process attended information",
+            "ffn_output = feedforward_network(multi_head_output)",
+            "# Two linear layers with ReLU: expand to 4x size, then compress back",
+            "# Allows model to do complex transformations on the attended information"
+          ]
+        },
+        {
+          "stepId": "residual",
+          "lines": [
+            "# Residual connection + Layer normalization",
+            "x = layer_norm(x + multi_head_output)  # Add & Norm",
+            "x = layer_norm(x + ffn_output)         # Add & Norm",
+            "# Residual connections help gradients flow during training",
+            "# Layer norm stabilizes training"
+          ]
+        },
+        {
+          "stepId": "output",
+          "lines": [
+            "# Step 5: Generate output",
+            "logits = linear_projection(final_layer_output)",
+            "predictions = softmax(logits)  # Probability over vocabulary",
+            "# Convert final hidden states to vocabulary probabilities",
+            "return predictions  # [seq_len, vocab_size] - what word comes next?"
+          ]
+        }
+      ],
+      "diagramBlocks": [
+        {
+          "stepId": "tokenization",
+          "label": "Input Tokenization",
+          "content": "\"Hello world\" → [101, 7592, 2088]"
+        },
+        {
+          "stepId": "embedding",
+          "label": "Token Embeddings",
+          "content": "Convert IDs to dense vectors [seq_len × d_model]"
+        },
+        {
+          "stepId": "positional",
+          "label": "Positional Encoding",
+          "content": "Add position info with sin/cos patterns"
+        },
+        {
+          "stepId": "transformer-layers",
+          "label": "Transformer Layers",
+          "content": "N blocks of attention + feedforward"
+        },
+        {
+          "stepId": "attention",
+          "label": "Multi-Head Attention",
+          "content": "Parallel attention heads learn different relationships"
+        },
+        {
+          "stepId": "feedforward",
+          "label": "Feed Forward",
+          "content": "2-layer MLP processes attended information"
+        },
+        {
+          "stepId": "residual",
+          "label": "Add & Norm",
+          "content": "Residual connections + layer normalization"
+        },
+        {
+          "stepId": "output",
+          "label": "Output Projection",
+          "content": "Convert to vocabulary probabilities"
+        }
+      ]
+    },
+    {
+      "id": "rnn",
+      "order": 2,
+      "title": "Recurrent Neural Network (RNN)",
+      "description": "Sequential processing architecture with memory",
+      "classDefinition": "class RecurrentNeuralNetwork(input_sequence):",
+      "codeSteps": [
+        {
+          "stepId": "rnn-init",
+          "lines": [
+            "# Step 1: Initialize hidden state (memory)",
+            "hidden_state = zeros(hidden_size)  # [hidden_dim] → [256]",
+            "# Start with empty memory - no previous context",
+            "",
+            "outputs = []"
+          ]
+        },
+        {
+          "stepId": "rnn-loop",
+          "lines": [
+            "# Step 2: Process sequence one token at a time (sequential)",
+            "for t in range(len(input_sequence)):"
+          ]
+        },
+        {
+          "stepId": "rnn-input",
+          "lines": [
+            "# Get current token",
+            "current_token = input_sequence[t]  # \"Hello\" then \"world\"",
+            "embedding = embed(current_token)  # Convert to vector"
+          ]
+        },
+        {
+          "stepId": "rnn-memory",
+          "lines": [
+            "# Combine current input with previous memory",
+            "combined_input = concat(embedding, hidden_state)",
+            "# [current_word_info, previous_context] → [embed_dim + hidden_dim]",
+            "",
+            "# Update hidden state (memory) based on current input and previous state",
+            "hidden_state = tanh(W_h @ hidden_state + W_x @ embedding + bias)",
+            "# New memory = nonlinear_function(previous_memory + current_input)",
+            "# tanh keeps values between -1 and 1 for stability"
+          ]
+        },
+        {
+          "stepId": "rnn-output",
+          "lines": [
+            "# Generate output for current timestep",
+            "output = W_out @ hidden_state + bias_out",
+            "# Transform memory state to output space",
+            "",
+            "outputs.append(output)",
+            "# Store output for this position"
+          ]
+        },
+        {
+          "stepId": "rnn-characteristics",
+          "lines": [
+            "# → Sequential processing: must process \"Hello\" before \"world\"",
+            "# → Memory: each step remembers all previous tokens in hidden_state",
+            "# → Bottleneck: information from early tokens can vanish in long sequences",
+            "",
+            "return outputs  # One output per input token",
+            "",
+            "# Key Characteristics:",
+            "# → Sequential processing (not parallelizable like Transformers)",
+            "# → Vanishing gradient problem in long sequences",
+            "# → Simple and intuitive memory mechanism"
+          ]
+        }
+      ],
+      "diagramBlocks": [
+        {
+          "stepId": "rnn-init",
+          "label": "Initialize Memory",
+          "content": "h₀ = zeros(hidden_size) Start with empty memory"
+        },
+        {
+          "stepId": "rnn-loop",
+          "label": "Sequential Processing",
+          "content": "Process tokens one by one in order"
+        },
+        {
+          "stepId": "rnn-input",
+          "label": "Current Input",
+          "content": "x_t = embed(token_t) Current token embedding"
+        },
+        {
+          "stepId": "rnn-memory",
+          "label": "Memory Update",
+          "content": "h_t = tanh(W_h·h_{t-1} + W_x·x_t) Combine past + present"
+        },
+        {
+          "stepId": "rnn-output",
+          "label": "Generate Output",
+          "content": "y_t = W_out·h_t + b Output from memory"
+        },
+        {
+          "stepId": "rnn-characteristics",
+          "label": "RNN Properties",
+          "content": "Sequential • Memory • Vanishing gradients"
+        }
+      ]
+    }
+  ]
+}

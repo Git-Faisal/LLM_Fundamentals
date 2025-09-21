@@ -1,0 +1,41 @@
+<!-- AI Research Field Network Section -->
+<section id="ai-tree" class="section">
+    <h2 class="section-title">AI Research Field Network</h2>
+    <div class="ai-network">
+        <!-- Graph Container -->
+        <div class="graph-container">
+            <svg class="network-svg" id="ai-network-svg"></svg>
+        </div>
+
+        <!-- Filter Panel (Right Side) -->
+        <div class="filter-panel">
+            <div class="filter-header">
+                <div class="filter-title">Filter and Explore</div>
+                <div class="filter-controls">
+                    <button id="expand-toggle-btn" class="filter-control-btn">Expand All</button>
+                    <button id="visibility-toggle-btn" class="filter-control-btn">Show All</button>
+                </div>
+            </div>
+            <div id="filter-items"></div>
+        </div>
+    </div>
+
+    <!-- Legend Panel (Bottom Left) -->
+    <div class="legend-panel-bottom">
+        <div class="legend-title">Field Hierarchy</div>
+        <div class="legend-section">
+            <h4>🔵 Core AI (1)</h4>
+            <h4>🟡 Major Fields (7)</h4>
+            <h4>🔴 Specialized Areas (5)</h4>
+            <h4>🟢 Sub-Areas (0)</h4>
+        </div>
+        <div class="zoom-section">
+            <h4>🔍 Zoom: <span id="zoom-level">100%</span></h4>
+            <div class="zoom-controls">
+                <button id="zoom-in-btn" class="zoom-btn">+</button>
+                <button id="zoom-out-btn" class="zoom-btn">−</button>
+                <button id="zoom-reset-btn" class="zoom-btn">⌂</button>
+            </div>
+        </div>
+    </div>
+</section>

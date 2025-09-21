@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Research Reference Page</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="components/ai-network.css?v=11">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Sticky Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #000000;
+            border-bottom: 1px solid #3e3e42;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2575D5;
+            font-family: 'Consolas', monospace;
+            margin-bottom: 0.25rem;
+        }
+
+        .author-name {
+            font-size: 0.9rem;
+            color: #E3D617;
+            font-family: 'Consolas', monospace;
+            font-style: italic;
+            margin-top: 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-item {
+            color: #2575D5;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-family: 'Consolas', monospace;
+        }
+
+        .nav-item:hover {
+            background-color: #3e3e42;
+            color: #E3D617;
+        }
+
+
+
+
+
+
+
+
+
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #BD9178;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #E3D617;
+            padding-bottom: 0.5rem;
+            font-family: 'Consolas', monospace;
+        }
+
+        /* Table Styles */
+        .terminology-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 14px;
+            background-color: #000000;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #3e3e42;
+            font-family: 'Consolas', monospace;
+            table-layout: fixed;
+        }
+
+        /* Responsive Column Widths */
+        .terminology-table th:nth-child(1),
+        .terminology-table td:nth-child(1) {
+            width: 200px; /* Fixed width for Section column */
+            min-width: 200px;
+        }
+
+        .terminology-table th:nth-child(2),
+        .terminology-table td:nth-child(2) {
+            width: 180px; /* Fixed width for Term column */
+            min-width: 180px;
+        }
+
+        .terminology-table th:nth-child(3),
+        .terminology-table td:nth-child(3) {
+            width: calc((100% - 200px - 180px - 280px) / 2); /* Dynamic - Technical Definition */
+            min-width: 250px;
+        }
+
+        .terminology-table th:nth-child(4),
+        .terminology-table td:nth-child(4) {
+            width: calc((100% - 200px - 180px - 280px) / 2); /* Dynamic - Layman Explanation */
+            min-width: 250px;
+        }
+
+        .terminology-table th:nth-child(5),
+        .terminology-table td:nth-child(5) {
+            width: 280px; /* Even wider for complex formulas */
+            min-width: 280px;
+        }
+
+        .terminology-table thead {
+            background-color: #000000;
+            color: #BD9178;
+            border-bottom: 2px solid #E3D617;
+        }
+
+        .terminology-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            border-right: 1px solid #3e3e42;
+            color: #BD9178;
+        }
+
+        .terminology-table th:last-child {
+            border-right: none;
+        }
+
+        .terminology-table td {
+            padding: 12px 16px;
+            border-right: 1px solid #3e3e42;
+            border-bottom: 1px solid #3e3e42;
+            color: #ffffff;
+        }
+
+        .terminology-table td:last-child {
+            border-right: none;
+        }
+
+        .terminology-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* VS Code Syntax Highlighting Colors */
+        /* For rows WITH section headers (first row of each section - 5 columns) */
+        .terminology-table .section-first-row td:nth-child(1) {
+            color: #BD9178 !important; /* Section headers - like class names */
+            font-weight: bold;
+            background-color: #000000;
+            font-family: 'Consolas', monospace;
+        }
+
+        .terminology-table .section-first-row td:nth-child(2) {
+            color: #CEBA7E !important; /* Term names - like function names */
+            font-weight: 600;
+        }
+
+        .terminology-table .section-first-row td:nth-child(3) {
+            color: #ffffff !important; /* Technical definitions */
+        }
+
+        .terminology-table .section-first-row td:nth-child(4) {
+            color: #ffffff !important; /* Layman explanations */
+        }
+
+        .terminology-table .section-first-row td:nth-child(5) {
+            color: #BDCEA9 !important; /* Categories - like comments */
+            font-style: italic;
+        }
+
+        /* For rows WITHOUT section headers (subsequent rows in section - 4 columns) */
+        .terminology-table tr:not(.section-first-row) td:nth-child(1) {
+            color: #CEBA7E !important; /* Term names - like function names */
+            font-weight: 600;
+        }
+
+        .terminology-table tr:not(.section-first-row) td:nth-child(2) {
+            color: #ffffff !important; /* Technical definitions */
+        }
+
+        .terminology-table tr:not(.section-first-row) td:nth-child(3) {
+            color: #ffffff !important; /* Layman explanations */
+        }
+
+        .terminology-table tr:not(.section-first-row) td:nth-child(4) {
+            color: #BDCEA9 !important; /* Categories - like comments */
+            font-style: italic;
+        }
+
+        /* VS Code Row Highlighting */
+        .row-1, .row-2, .row-3, .row-4, .row-5, .row-6, .row-7, .row-8, .row-9, .row-10, .row-11 {
+            background-color: #000000;
+        }
+
+        .row-1:hover, .row-2:hover, .row-3:hover, .row-4:hover, .row-5:hover, .row-6:hover, .row-7:hover, .row-8:hover, .row-9:hover, .row-10:hover, .row-11:hover {
+            background-color: #1a1a1a;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Formula Breakdown Styles */
+        .formula-container {
+            position: relative;
+        }
+
+        .formula-breakdown {
+            display: none;
+            background: #000000;
+            border: 1px solid #E3D617;
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #ffffff;
+            font-family: 'Consolas', monospace;
+        }
+
+        .formula-breakdown.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .formula-toggle {
+            color: #2575D5 !important;
+            cursor: pointer;
+            font-size: 11px;
+            text-decoration: underline;
+            margin-left: 8px;
+            font-family: 'Consolas', monospace;
+        }
+
+        .formula-toggle:hover {
+            color: #E3D617 !important;
+        }
+
+        /* Ensure body text is white, but allow syntax highlighting */
+        p, div:not(pre div) {
+            color: #ffffff;
+        }
+
+        /* VS Code style scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #424242;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* VS Code Syntax Highlighting Classes */
+        .vs-comment { color: #BDCEA9; }
+        .vs-keyword { color: #2575D5; }
+        .vs-function { color: #CEBA7E; }
+        .vs-class { color: #BD9178; }
+        .vs-bracket { color: #E3D617; }
+        .vs-operator { color: #2575D5; }
+        .vs-string { color: #BD9178; }
+        .vs-number { color: #2575D5; }
+        .vs-variable { color: #ffffff; }
+
+        .variable {
+            color: #E3D617;
+            font-weight: bold;
+            background: #000000;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+        }
+
+        .variable-desc {
+            color: #BDCEA9;
+            margin-left: 8px;
+            font-style: italic;
+            font-family: 'Consolas', monospace;
+        }
+
+        /* Hyperlink Styles */
+        .reference-link {
+            color: #2575D5 !important;
+            text-decoration: none;
+        }
+
+        .reference-link:hover {
+            color: #E3D617 !important;
+            text-decoration: underline;
+        }
+
+        /* Loading indicator */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #BD9178;
+        }
+
+        /* Table Container for Horizontal Scroll */
+        .table-container {
+            overflow-x: auto;
+            margin: 0 -2rem;
+            padding: 0 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            /* Adjust minimum widths for smaller screens */
+            .terminology-table th:nth-child(3),
+            .terminology-table td:nth-child(3),
+            .terminology-table th:nth-child(4),
+            .terminology-table td:nth-child(4) {
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .terminology-table {
+                font-size: 12px;
+            }
+
+            /* Enable horizontal scrolling on small screens */
+            .table-container {
+                margin: 0 -1rem;
+                padding: 0 1rem;
+            }
+
+            /* Fixed column widths for mobile */
+            .terminology-table th:nth-child(1),
+            .terminology-table td:nth-child(1) {
+                width: 150px;
+                min-width: 150px;
+            }
+
+            .terminology-table th:nth-child(2),
+            .terminology-table td:nth-child(2) {
+                width: 140px;
+                min-width: 140px;
+            }
+
+            .terminology-table th:nth-child(3),
+            .terminology-table td:nth-child(3) {
+                width: 200px;
+                min-width: 200px;
+            }
+
+            .terminology-table th:nth-child(4),
+            .terminology-table td:nth-child(4) {
+                width: 200px;
+                min-width: 200px;
+            }
+
+            .terminology-table th:nth-child(5),
+            .terminology-table td:nth-child(5) {
+                width: 200px;
+                min-width: 200px;
+            }
+        }
+
+        /* Interactive Architecture Diagram Styles */
+        .diagram-block {
+            text-align: center;
+        }
+
+        .code-step {
+            transition: opacity 0.3s ease;
+        }
+
+        .code-step.dimmed {
+            opacity: 0.3;
+        }
+
+        .diagram-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+
+        .diagram-block.active {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+        /* Arrow styles */
+        .diagram-arrow {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid #666666;
+            margin: 8px auto;
+            position: relative;
+        }
+
+        .diagram-arrow::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -1px;
+            width: 2px;
+            height: 8px;
+            background-color: #666666;
+        }
+
+        /* Responsive layout for smaller screens */
+        @media (max-width: 1200px) {
+            .transformer-layout {
+                flex-direction: column !important;
+                gap: 20px !important;
+            }
+
+            .transformer-layout > div {
+                flex: none !important;
+                max-width: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <h1 class="main-title">LLM Research Reference Page</h1>
+                <p class="author-name">by Faisal Alkhorayef</p>
+            </div>
+            <nav class="nav-menu">
+                <a href="#ai-tree" class="nav-item">AI Hierarchy</a>
+                <a href="#terminology" class="nav-item">Terminology</a>
+                <a href="#architectures" class="nav-item">Common Architectures</a>
+                <a href="#economics" class="nav-item">AI Model Economics</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- AI Network Section (Loaded Dynamically) -->
+        <div id="ai-network-container">
+            <div class="loading" style="padding: 2rem; text-align: center; color: #E3D617;">
+                Loading AI Research Field Network...
+            </div>
+        </div>
+
+        <!-- Terminology Section -->
+        <section id="terminology" class="section">
+            <h2 class="section-title">Terminology</h2>
+            <div class="loading" id="loading">Loading terminology data...</div>
+            <div class="table-container">
+                <table class="terminology-table" id="terminologyTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Term</th>
+                            <th>Technical Definition</th>
+                            <th>Layman Explanation</th>
+                            <th>Type & Reference/Formula</th>
+                        </tr>
+                    </thead>
+                    <tbody id="terminologyBody">
+                        <!-- Table content will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Common Architectures Section -->
+        <section id="architectures" class="section">
+            <div class="loading" style="padding: 2rem; text-align: center; color: #E3D617;">
+                Loading architecture data...
+            </div>
+        </section>
+        <!-- Economics Section -->
+        <section id="economics" class="section">
+            <h2 class="section-title">Economics of Large Language Models</h2>
+            <div style="background: #000000; border: 1px solid #3e3e42; border-radius: 8px; padding: 20px;">
+                <h3 style="color: #CEBA7E; margin-bottom: 1rem; font-family: 'Consolas', monospace;">Topics to be covered:</h3>
+                <ul style="color: #ffffff; margin-left: 2rem;">
+                    <li>Training costs and infrastructure requirements</li>
+                    <li>Inference costs and optimization strategies</li>
+                    <li>Model scaling economics</li>
+                    <li>Cost-performance trade-offs</li>
+                    <li>Business models and pricing strategies</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // Interactive Architecture Diagram Functionality
+        function initializeArchitectureDiagram() {
+            const diagramBlocks = document.querySelectorAll('.diagram-block');
+            const codeSteps = document.querySelectorAll('.code-step');
+
+            diagramBlocks.forEach(block => {
+                const stepId = block.getAttribute('data-step');
+
+                // Hover events
+                block.addEventListener('mouseenter', () => {
+                    // Highlight diagram block
+                    block.classList.add('active');
+
+                    // Dim all code steps
+                    codeSteps.forEach(step => {
+                        step.classList.add('dimmed');
+                    });
+
+                    // Highlight relevant code steps
+                    const relevantSteps = document.querySelectorAll(`[data-step="${stepId}"]`);
+                    relevantSteps.forEach(step => {
+                        step.classList.remove('dimmed');
+                    });
+                });
+
+                block.addEventListener('mouseleave', () => {
+                    // Remove diagram highlight
+                    block.classList.remove('active');
+
+                    // Remove all dimming
+                    codeSteps.forEach(step => {
+                        step.classList.remove('dimmed');
+                    });
+                });
+            });
+        }
+
+        // Formula toggle functionality
+        function toggleFormula(formulaId) {
+            const formula = document.getElementById(formulaId);
+            if (formula) {
+                formula.classList.toggle('show');
+            }
+        }
+
+        // Load terminology data from JSON
+        async function loadTerminologyData() {
+            try {
+                const response = await fetch('./data/llm_terminology_data.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                populateTerminologyTable(data);
+            } catch (error) {
+                console.error('Error loading terminology data:', error);
+                document.getElementById('loading').textContent = 'Error loading data. Please check that llm_terminology_data.json is available.';
+            }
+        }
+
+        // Populate the terminology table
+        function populateTerminologyTable(data) {
+            const tbody = document.getElementById('terminologyBody');
+            const table = document.getElementById('terminologyTable');
+            const loading = document.getElementById('loading');
+
+            data.sections.forEach((section, sectionIndex) => {
+                section.terms.forEach((term, termIndex) => {
+                    const row = document.createElement('tr');
+                    const isFirstInSection = termIndex === 0;
+
+                    // Add row classes
+                    row.className = `row-${section.id}`;
+                    if (isFirstInSection) {
+                        row.className += ' section-first-row';
+                    }
+
+                    // Create row content
+                    let rowContent = '';
+
+                    // Add section header for first term in section
+                    if (isFirstInSection) {
+                        rowContent += `<td rowspan="${section.terms.length}" class="${section.className}" style="color:#BD9178; font-weight:bold; background-color:#000000; font-family:'Consolas',monospace;">${section.title}</td>`;
+                    }
+
+                    // Add term data
+                    rowContent += `<td>${term.name}</td>`;
+                    rowContent += `<td>${term.technical}</td>`;
+                    rowContent += `<td>${term.layman}</td>`;
+
+                    // Handle type column with formulas
+                    let typeContent = term.type;
+                    if (term.hasFormula && term.formulaId) {
+                        typeContent += `<span class="formula-toggle" onclick="toggleFormula('${term.formulaId}')">Show Variables</span>`;
+                        typeContent += `<div id="${term.formulaId}" class="formula-breakdown">`;
+                        if (term.variables) {
+                            term.variables.forEach(variable => {
+                                typeContent += `<div><span class="variable">${variable.symbol}</span><span class="variable-desc">= ${variable.description}</span></div>`;
+                            });
+                        }
+                        typeContent += '</div>';
+                    }
+                    rowContent += `<td class="formula-container">${typeContent}</td>`;
+
+                    row.innerHTML = rowContent;
+                    tbody.appendChild(row);
+                });
+            });
+
+            // Show table and hide loading
+            loading.style.display = 'none';
+            table.style.display = 'table';
+        }
+
+        // Load architecture data from JSON
+        async function loadArchitectureData() {
+            try {
+                const response = await fetch('./data/architecture_data.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                renderArchitectures(data.architectures);
+            } catch (error) {
+                console.error('Error loading architecture data:', error);
+                document.getElementById('architectures').innerHTML = `
+                    <h2 class="section-title">Common Architectures</h2>
+                    <div style="color: #ff4444; padding: 2rem;">
+                        Error loading architecture data. Please check the console for details.
+                    </div>
+                `;
+            }
+        }
+
+        // Render architecture data
+        function renderArchitectures(architectures) {
+            const container = document.getElementById('architectures');
+
+            let html = '<h2 class="section-title">Common Architectures</h2>';
+
+            architectures.forEach(arch => {
+                html += `
+                    <div style="margin-bottom: 50px;">
+                        <h3 style="color: #BD9178; font-size: 20px; margin-bottom: 20px; font-family: 'Consolas', monospace;">
+                            ${arch.order}. ${arch.title}
+                        </h3>
+
+                        <!-- Two-column layout: Code on left, Diagram on right -->
+                        <div class="transformer-layout" style="display: flex; gap: 30px; align-items: flex-start;">
+
+                            <!-- Code Block (Left Column) -->
+                            <div style="flex: 1; min-width: 0;">
+                                <pre id="${arch.id}-code" style="background: #000000; border: 1px solid #3e3e42; border-radius: 8px; padding: 20px; font-family: 'Consolas', monospace; font-size: 14px; line-height: 1.6; overflow-x: auto; margin: 0;">
+<span class="vs-comment"># ${arch.description}</span>
+<span class="vs-keyword">class</span> <span class="vs-class">${arch.classDefinition.split('(')[0].split(' ')[1]}</span><span class="vs-bracket">(</span><span class="vs-variable">${arch.classDefinition.split('(')[1]}</span>
+${arch.codeSteps.map(step =>
+    `    <span class="code-step" data-step="${step.stepId}">${step.lines.map(line =>
+        line.startsWith('#') ? `<span class="vs-comment">${line}</span>` :
+        line.includes('class ') ? `<span class="vs-keyword">class</span> <span class="vs-class">${line.split('class ')[1]}</span>` :
+        line.includes('def ') ? `<span class="vs-keyword">def</span> <span class="vs-function">${line.split('def ')[1]}</span>` :
+        line.includes('for ') ? `<span class="vs-keyword">for</span> ${line.split('for ')[1].replace(/(\w+)/g, '<span class="vs-variable">$1</span>')}` :
+        line.includes('return ') ? `<span class="vs-keyword">return</span> ${line.split('return ')[1]}` :
+        line.includes(' = ') ? line.replace(/(\w+)\s*=/, '<span class="vs-variable">$1</span> <span class="vs-operator">=</span>') :
+        line
+    ).join('\n    ')}</span>`
+).join('\n\n')}
+                                </pre>
+                            </div>
+
+                            <!-- Diagram (Right Column) -->
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; flex-direction: column; gap: 15px; background: #1a1a1a; border: 1px solid #3e3e42; border-radius: 8px; padding: 20px;">
+                                    ${arch.diagramBlocks.map(block => `
+                                        <div class="diagram-block" data-step="${block.stepId}" style="background: #2a2a2a; border: 1px solid #444; border-radius: 6px; padding: 15px; cursor: pointer; text-align: center; transition: all 0.3s ease;">
+                                            <div style="font-weight: bold; color: #E3D617; margin-bottom: 8px; font-size: 14px;">${block.label}</div>
+                                            <div style="color: #ffffff; font-size: 12px; line-height: 1.4;">${block.content}</div>
+                                            <div class="arrow-down" style="margin: 10px auto 0; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #666;"></div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // Initialize interactivity after rendering
+            initializeArchitectureDiagram();
+        }
+
+        // AI Network Modular Loader
+        async function loadAINetworkComponent() {
+            try {
+                // Load the HTML template
+                const htmlResponse = await fetch('./components/ai-network.html?v=' + Date.now());
+                if (!htmlResponse.ok) throw new Error(`Failed to load AI network HTML: ${htmlResponse.status}`);
+
+                const htmlContent = await htmlResponse.text();
+                document.getElementById('ai-network-container').innerHTML = htmlContent;
+
+                // Load and initialize the JavaScript
+                const script = document.createElement('script');
+                script.src = './components/ai-network.js?v=' + Date.now();
+                script.onload = () => {
+                    try {
+                        // Small delay to ensure D3 is available
+                        setTimeout(() => {
+                            if (typeof window.initializeAINetwork === 'function') {
+                                window.initializeAINetwork('ai-tree');
+                                console.log('✅ AI Network component loaded successfully');
+                            } else {
+                                throw new Error('initializeAINetwork function not found');
+                            }
+                        }, 100);
+                    } catch (initError) {
+                        console.error('❌ Failed to initialize AI Network:', initError);
+                        throw initError;
+                    }
+                };
+                script.onerror = () => {
+                    throw new Error('Failed to load ai-network.js');
+                };
+                document.head.appendChild(script);
+            } catch (error) {
+                console.error('❌ Failed to load AI Network component:', error);
+                document.getElementById('ai-network-container').innerHTML = `
+                    <div class="section" style="padding: 2rem; text-align: center; color: #ff4444;">
+                        <h2 class="section-title">AI Research Field Network</h2>
+                        <p>Unable to load AI network visualization.</p>
+                        <p style="font-size: 0.9em; color: #888;">Please check your connection and refresh the page.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTerminologyData();
+            loadArchitectureData();
+            loadAINetworkComponent();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1165 @@
+{
+  "sections": [
+    {
+      "id": 1,
+      "title": "Basic Building Blocks",
+      "className": "section-1",
+      "terms": [
+        {
+          "id": "1.1",
+          "name": "Neurons",
+          "technical": "Atomic computational units applying weighted sums, biases, and nonlinearities to inputs.",
+          "layman": "Little switches that \"light up\" if they like the input.",
+          "type": "Formula<br/>y = f(Σ(w<sub>i</sub>x<sub>i</sub>) + b)",
+          "hasFormula": true,
+          "formulaId": "formula-neuron",
+          "variables": [
+            {"symbol": "y", "description": "Output of the neuron"},
+            {"symbol": "f", "description": "Activation function (e.g., ReLU, sigmoid)"},
+            {"symbol": "w<sub>i</sub>", "description": "Weight for input i"},
+            {"symbol": "x<sub>i</sub>", "description": "Input value i"},
+            {"symbol": "b", "description": "Bias term"},
+            {"symbol": "Σ", "description": "Sum over all inputs"}
+          ]
+        },
+        {
+          "id": "1.2",
+          "name": "Tokens",
+          "technical": "Discrete input/output units (words, subwords, bytes) processed by the model.",
+          "layman": "LEGO bricks of text that the model reads one by one.",
+          "type": "Concept<br/>(Shannon, 1948)",
+          "hasFormula": false
+        },
+        {
+          "id": "1.3",
+          "name": "Parameters",
+          "technical": "Trainable weights and biases updated via optimization (e.g., gradient descent).",
+          "layman": "Knobs and dials the model tunes to get better.",
+          "type": "Concept<br/>(Rosenblatt, 1958)",
+          "hasFormula": false
+        },
+        {
+          "id": "1.4",
+          "name": "Layers",
+          "technical": "Stacked computation blocks; each transforms activations and passes them forward.",
+          "layman": "Steps in a recipe, each stage refines the dish.",
+          "type": "Concept<br/><a href=\"https://www.nature.com/articles/323533a0\" class=\"reference-link\" target=\"_blank\">(Rumelhart et al., 1986)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "1.5",
+          "name": "Weights",
+          "technical": "Numerical values stored in connections between neurons that determine signal strength and processing behavior.",
+          "layman": "Volume knobs on each connection - louder means more influence.",
+          "type": "Concept<br/>(McCulloch & Pitts, 1943)",
+          "hasFormula": false
+        },
+        {
+          "id": "1.6",
+          "name": "Tensors",
+          "technical": "Multi-dimensional arrays storing and manipulating numerical data in AI models (scalars, vectors, matrices, higher-order arrays).",
+          "layman": "Spreadsheets that can have many dimensions - like a stack of tables within tables.",
+          "type": "Concept<br/>(Ricci & Levi-Civita, 1900)",
+          "hasFormula": false
+        },
+        {
+          "id": "1.7",
+          "name": "Activation Functions",
+          "technical": "Mathematical functions that determine whether and how strongly a neuron \"fires\" based on its input (e.g., ReLU, sigmoid, tanh).",
+          "layman": "The decision rule for whether a switch turns on - some are gentle dimmers, others are strict on/off switches.",
+          "type": "Formula<br/>ReLU: f(x) = max(0,x)<br/>Sigmoid: σ(x) = 1/(1+e<sup>-x</sup>)<br/>Softmax: σ(z<sub>i</sub>) = e<sup>z<sub>i</sub></sup>/Σe<sup>z<sub>j</sub></sup>",
+          "hasFormula": true,
+          "formulaId": "formula-activation",
+          "variables": [
+            {"symbol": "f(x)", "description": "Output of activation function"},
+            {"symbol": "x", "description": "Input value to the function"},
+            {"symbol": "σ(x)", "description": "Sigmoid function output (0 to 1)"},
+            {"symbol": "e", "description": "Euler's number (≈2.718)"},
+            {"symbol": "z<sub>i</sub>", "description": "Input logit for token i"},
+            {"symbol": "Σ", "description": "Sum over all possible tokens j"}
+          ]
+        },
+        {
+          "id": "1.8",
+          "name": "Embeddings",
+          "technical": "Dense vector representations that capture semantic meaning of discrete items like words, mapping them to continuous numerical space.",
+          "layman": "Translating words into GPS coordinates in \"meaning space\" - similar words get nearby locations.",
+          "type": "Concept<br/><a href=\"https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf\" class=\"reference-link\" target=\"_blank\">(Bengio et al., 2003)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "1.9",
+          "name": "Vocabulary Size",
+          "technical": "The total number of unique tokens (words, subwords, characters) that a model can understand and generate.",
+          "layman": "The size of the model's dictionary - how many different words/pieces it knows (typically 32K-100K+ tokens).",
+          "type": "Parameter<br/>|V| (vocabulary size)",
+          "hasFormula": false
+        },
+        {
+          "id": "1.10",
+          "name": "Tokenization",
+          "technical": "Process of breaking down text into smaller units (tokens) that neural networks can process, using algorithms like BPE or SentencePiece.",
+          "layman": "Chopping up sentences into bite-sized pieces that the AI can digest - like cutting food before eating.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1508.07909\" class=\"reference-link\" target=\"_blank\">(Sennrich et al., 2016)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "1.11",
+          "name": "Dataset",
+          "technical": "Collection of training examples used to teach the model, including text corpora, instruction pairs, and preference data.",
+          "layman": "The textbooks and study materials the AI learns from - quality and variety determine how smart it becomes.",
+          "type": "Concept<br/>(Statistical Learning Theory)",
+          "hasFormula": false
+        },
+        {
+          "id": "1.12",
+          "name": "Data Quality",
+          "technical": "Measure of how clean, accurate, diverse, and representative training data is, directly impacting model performance.",
+          "layman": "Like having good vs. bad textbooks - clean, accurate information leads to better learning.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1901.10002\" class=\"reference-link\" target=\"_blank\">(Roh et al., 2019)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "1.13",
+          "name": "Bias in Data",
+          "technical": "Systematic prejudices or skewed perspectives present in training data that can lead to unfair or inaccurate model behavior.",
+          "layman": "When the textbooks have unfair stereotypes or missing perspectives, the AI learns those biases too.",
+          "type": "Concept<br/><a href=\"https://fairmlbook.org/\" class=\"reference-link\" target=\"_blank\">(Barocas et al., 2019)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "1.14",
+          "name": "Model Size",
+          "technical": "Number of parameters in a model, typically measured in billions (e.g., 7B, 70B, 175B), correlating with capability and computational requirements.",
+          "layman": "How big the AI's brain is - measured in billions of connections, bigger usually means smarter but more expensive.",
+          "type": "Parameter<br/>θ ∈ ℝ<sup>n</sup> (n parameters)",
+          "hasFormula": true,
+          "formulaId": "formula-modelsize",
+          "variables": [
+            {"symbol": "θ", "description": "Vector of all model parameters (weights and biases)"},
+            {"symbol": "ℝ<sup>n</sup>", "description": "n-dimensional real number space"},
+            {"symbol": "n", "description": "Total number of parameters (e.g., 7B, 70B, 175B)"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "How Learning Works",
+      "className": "section-2",
+      "terms": [
+        {
+          "id": "2.1",
+          "name": "Learning Rate",
+          "technical": "Scalar step size for parameter updates in optimization algorithms.",
+          "layman": "How big a leap you take when correcting mistakes.",
+          "type": "Parameter<br/>α (learning rate)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.2",
+          "name": "Batch / Batch Size",
+          "technical": "A batch is a set of examples processed before an update; batch size is its count. Smaller batches yield higher-variance (noisier) gradient estimates; larger batches yield smoother estimates.",
+          "layman": "Studying flashcards in groups: few cards → quick but noisy learning; many cards → stable but heavier work.",
+          "type": "Parameter<br/>B = batch size",
+          "hasFormula": false
+        },
+        {
+          "id": "2.3",
+          "name": "Epochs / Iterations",
+          "technical": "Epoch: one full pass over the dataset. Iteration: one parameter update using a batch.",
+          "layman": "Finish the whole textbook (epoch) vs. one study round (iteration).",
+          "type": "Concept<br/>(Training Protocol)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.4",
+          "name": "Dropout",
+          "technical": "Regularization technique that randomly zeroes activations during training to reduce overfitting.",
+          "layman": "Cover parts of the answer so you don't memorize too rigidly.",
+          "type": "Formula<br/>y = x ⊙ Bernoulli(1-p) / (1-p)",
+          "hasFormula": true,
+          "formulaId": "formula-dropout",
+          "variables": [
+            {"symbol": "y", "description": "Output after dropout"},
+            {"symbol": "x", "description": "Input values"},
+            {"symbol": "⊙", "description": "Element-wise multiplication"},
+            {"symbol": "Bernoulli(1-p)", "description": "Random 0/1 mask (1 with probability 1-p)"},
+            {"symbol": "p", "description": "Dropout probability (fraction of neurons to drop)"},
+            {"symbol": "/ (1-p)", "description": "Scaling factor to maintain expected values"}
+          ]
+        },
+        {
+          "id": "2.5",
+          "name": "Back Propagation",
+          "technical": "Algorithm that calculates gradients by propagating error signals backward through the network to update weights.",
+          "layman": "Working backwards from mistakes to figure out which knobs to adjust and by how much.",
+          "type": "Concept<br/><a href=\"https://www.nature.com/articles/323533a0\" class=\"reference-link\" target=\"_blank\">(Rumelhart et al., 1986)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "2.6",
+          "name": "Loss Function",
+          "technical": "Mathematical function that quantifies the difference between model predictions and actual targets, guiding optimization.",
+          "layman": "A score that measures how wrong your answers are - the goal is to get this as low as possible.",
+          "type": "Formula<br/>Cross-entropy: L = -Σy<sub>i</sub>log(ŷ<sub>i</sub>)",
+          "hasFormula": true,
+          "formulaId": "formula-crossentropy",
+          "variables": [
+            {"symbol": "L", "description": "Total loss (prediction error)"},
+            {"symbol": "y<sub>i</sub>", "description": "True probability for class i (usually 0 or 1)"},
+            {"symbol": "ŷ<sub>i</sub>", "description": "Predicted probability for class i"},
+            {"symbol": "log", "description": "Natural logarithm"},
+            {"symbol": "Σ", "description": "Sum over all classes i"}
+          ]
+        },
+        {
+          "id": "2.7",
+          "name": "Gradient Descent",
+          "technical": "Optimization algorithm that iteratively adjusts parameters in the direction that reduces the loss function.",
+          "layman": "Rolling a ball downhill to find the bottom - each step goes in the steepest downward direction.",
+          "type": "Formula<br/>θ = θ - α∇J(θ)",
+          "hasFormula": true,
+          "formulaId": "formula-gradient",
+          "variables": [
+            {"symbol": "θ", "description": "Model parameters (weights and biases)"},
+            {"symbol": "α", "description": "Learning rate (step size)"},
+            {"symbol": "∇J(θ)", "description": "Gradient of loss function (direction of steepest increase)"},
+            {"symbol": "J(θ)", "description": "Loss function (measures prediction error)"}
+          ]
+        },
+        {
+          "id": "2.8",
+          "name": "Generalization",
+          "technical": "A model's ability to perform well on new, unseen data rather than just memorizing the training examples.",
+          "layman": "Learning the underlying pattern instead of just memorizing answers - like understanding math concepts vs. memorizing times tables.",
+          "type": "Concept<br/>(Vapnik, 1998)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.9",
+          "name": "Fine-tuning",
+          "technical": "Process of adapting a pre-trained model to specific tasks by continuing training on task-specific data with smaller learning rates.",
+          "layman": "Taking a generally educated AI and giving it specialized training for a specific job - like a doctor getting specialized training.",
+          "type": "Concept<br/>(Howard & Ruder, 2018)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.10",
+          "name": "RLHF (Reinforcement Learning from Human Feedback)",
+          "technical": "Training technique that uses human preferences to train a reward model, then optimizes the language model using reinforcement learning.",
+          "layman": "Teaching AI to behave better by having humans rate its answers and rewarding it for responses people prefer.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1706.03741\" class=\"reference-link\" target=\"_blank\">(Christiano et al., 2017)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "2.11",
+          "name": "Training",
+          "technical": "The overall process of teaching a neural network by adjusting its parameters based on data to minimize prediction errors.",
+          "layman": "The AI's learning process - like going to school and studying to get better at solving problems.",
+          "type": "Concept<br/>(Statistical Learning)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.12",
+          "name": "Pre-training",
+          "technical": "Initial large-scale training phase where models learn general language understanding from vast amounts of text data.",
+          "layman": "The AI's \"elementary education\" - learning basic language, facts, and reasoning from reading lots of text.",
+          "type": "Concept<br/><a href=\"https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf\" class=\"reference-link\" target=\"_blank\">(Radford et al., 2018)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "2.13",
+          "name": "Post-training",
+          "technical": "Training phases that occur after pre-training, including fine-tuning, RLHF, and other alignment techniques.",
+          "layman": "The AI's \"specialized training\" - learning specific skills, manners, and how to be helpful after basic education.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2203.02155\" class=\"reference-link\" target=\"_blank\">(Ouyang et al., 2022)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "2.14",
+          "name": "Catastrophic Forgetting",
+          "technical": "When a model loses previously learned knowledge upon learning new tasks, a major challenge in continual learning.",
+          "layman": "Like forgetting how to ride a bike when you learn to drive - new learning erases old skills.",
+          "type": "Concept<br/>(McCloskey & Cohen, 1989)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.15",
+          "name": "Instruction Tuning",
+          "technical": "Training process that teaches models to follow human instructions and respond helpfully to diverse requests.",
+          "layman": "Teaching AI to follow directions and be a helpful assistant - like training to understand \"please\" and \"thank you\".",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2109.01652\" class=\"reference-link\" target=\"_blank\">(Wei et al., 2021)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "2.16",
+          "name": "Constitutional AI",
+          "technical": "Training approach using a set of principles or \"constitution\" to guide model behavior and self-correction.",
+          "layman": "Giving AI a moral code to follow - like teaching it right from wrong using a rulebook.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2212.08073\" class=\"reference-link\" target=\"_blank\">(Bai et al., 2022)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "2.17",
+          "name": "Safety Alignment",
+          "technical": "Ensuring AI systems behave safely and in accordance with human values and intentions.",
+          "layman": "Making sure AI wants to help humans and won't do harmful things - like safety training for powerful tools.",
+          "type": "Concept<br/>(Russell, 2019)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.18",
+          "name": "Red Teaming",
+          "technical": "Adversarial testing where researchers try to find ways to make AI systems behave badly or unsafely.",
+          "layman": "Hiring people to try to break the AI on purpose - like security testing by professional hackers.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2209.07858\" class=\"reference-link\" target=\"_blank\">(Ganguli et al., 2022)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "2.19",
+          "name": "Supervised Learning",
+          "technical": "Machine learning paradigm where models are trained on labeled data, learning to map inputs to known correct outputs through examples.",
+          "layman": "Learning with a teacher who shows you the right answers - like studying with answer keys.",
+          "type": "Concept<br/>(ML Paradigm)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.20",
+          "name": "Unsupervised Learning",
+          "technical": "Machine learning approach where models find patterns, structures, or representations in data without explicit labels or target outputs.",
+          "layman": "Learning by exploration without a teacher - like discovering patterns in data by yourself.",
+          "type": "Concept<br/>(ML Paradigm)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.21",
+          "name": "Self-supervised Learning",
+          "technical": "Learning paradigm where models create their own supervisory signals from the input data structure, such as predicting masked tokens or next tokens in sequences.",
+          "layman": "Learning by filling in the blanks in sentences - the model teaches itself by hiding parts of text and trying to guess them.",
+          "type": "Concept<br/>(ML Paradigm)",
+          "hasFormula": false
+        },
+        {
+          "id": "2.22",
+          "name": "Semi-supervised Learning",
+          "technical": "Learning approach that combines small amounts of labeled data with larger amounts of unlabeled data to improve model performance beyond what supervised learning alone could achieve.",
+          "layman": "Learning with a few examples from a teacher plus lots of practice material without answers - making the most of limited guidance.",
+          "type": "Concept<br/>(ML Paradigm)",
+          "hasFormula": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Memory & Context",
+      "className": "section-3",
+      "terms": [
+        {
+          "id": "3.1",
+          "name": "Working Memory",
+          "technical": "Persistent state carried across tokens during inference (ρ or σ depending on architecture).",
+          "layman": "The model's short-term memory as it reads a sequence.",
+          "type": "Concept<br/>(State representation)",
+          "hasFormula": false
+        },
+        {
+          "id": "3.2",
+          "name": "KV-Cache",
+          "technical": "Transformer's rolling storage of past Keys/Values to avoid recomputation during autoregressive decoding.",
+          "layman": "A running notebook of past sentences for quick lookup.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1706.03762\" class=\"reference-link\" target=\"_blank\">(Vaswani et al., 2017)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "3.3",
+          "name": "Context Length / Window",
+          "technical": "Maximum number of tokens considered for attention/state at once (fixed in many Transformers; potentially unbounded in non-transformer architectures with damping).",
+          "layman": "How far back the model can remember in one go.",
+          "type": "Parameter<br/>L = context length",
+          "hasFormula": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Modern AI Interactions",
+      "className": "section-4",
+      "terms": [
+        {
+          "id": "4.1",
+          "name": "System Prompts",
+          "technical": "Initial instructions that define the AI's role, behavior, and constraints before user interaction begins.",
+          "layman": "Setting the stage and rules for how the AI should act - like giving an actor their character background.",
+          "type": "Concept<br/>(Prompt design)",
+          "hasFormula": false
+        },
+        {
+          "id": "4.2",
+          "name": "Prompting",
+          "technical": "The art and science of crafting input text to effectively communicate with and guide AI model behavior and outputs.",
+          "layman": "Learning how to \"speak AI\" - asking questions in ways that get the best answers.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2005.14165\" class=\"reference-link\" target=\"_blank\">(Brown et al., 2020)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "4.3",
+          "name": "Prompt Engineering",
+          "technical": "Systematic approach to designing prompts that maximize model performance for specific tasks through iterative refinement.",
+          "layman": "Professional-level skill of crafting perfect instructions to get exactly what you want from AI.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2104.08691\" class=\"reference-link\" target=\"_blank\">(Liu et al., 2021)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "4.4",
+          "name": "Few-shot Learning",
+          "technical": "Model's ability to perform tasks with only a few examples provided in the prompt, without parameter updates.",
+          "layman": "Learning from just a handful of examples, like understanding a pattern from seeing it 2-3 times.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2005.14165\" class=\"reference-link\" target=\"_blank\">(Brown et al., 2020)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "4.5",
+          "name": "Zero-shot Learning",
+          "technical": "Model's ability to perform tasks without any task-specific examples, relying solely on pre-trained knowledge.",
+          "layman": "Tackling brand new problems with no examples - pure problem-solving from existing knowledge.",
+          "type": "Concept<br/><a href=\"https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf\" class=\"reference-link\" target=\"_blank\">(Radford et al., 2019)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "4.6",
+          "name": "In-context Learning",
+          "technical": "Model's ability to adapt to new tasks or patterns within a single conversation without weight updates.",
+          "layman": "Getting better at something during the conversation itself, like learning your preferences as you chat.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2005.14165\" class=\"reference-link\" target=\"_blank\">(Brown et al., 2020)</a>",
+          "hasFormula": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Attention & Focus",
+      "className": "section-5",
+      "terms": [
+        {
+          "id": "5.1",
+          "name": "Attention",
+          "technical": "Computes weighted sums of value vectors using query–key similarity as weights.",
+          "layman": "Search the index (keys) to find the right content (values) for your question (query).",
+          "type": "Formula<br/>Attention(Q,K,V) = softmax(QK<sup>T</sup>/√d<sub>k</sub>)V",
+          "hasFormula": true,
+          "formulaId": "formula-attention",
+          "variables": [
+            {"symbol": "Q", "description": "Query matrix (what we're looking for)"},
+            {"symbol": "K", "description": "Key matrix (what we're comparing against)"},
+            {"symbol": "V", "description": "Value matrix (actual content to retrieve)"},
+            {"symbol": "d<sub>k</sub>", "description": "Dimension of key vectors (for scaling)"},
+            {"symbol": "softmax", "description": "Normalization function (makes weights sum to 1)"},
+            {"symbol": "T", "description": "Matrix transpose operation"}
+          ]
+        },
+        {
+          "id": "5.2",
+          "name": "Linear Attention",
+          "technical": "Attention reformulation that avoids quadratic scaling by compressing or factoring history/state.",
+          "layman": "Keep a running summary instead of comparing every word to every other word.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2006.16236\" class=\"reference-link\" target=\"_blank\">(Katharopoulos et al., 2020)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "5.3",
+          "name": "Number of Heads",
+          "technical": "The count of parallel attention mechanisms in multi-head attention, each learning different types of relationships.",
+          "layman": "Having multiple specialized detectives, each looking for different types of clues in the same text.",
+          "type": "Parameter<br/>h = number of heads",
+          "hasFormula": false
+        },
+        {
+          "id": "5.4",
+          "name": "Key (Key Matrix)",
+          "technical": "Matrix in attention mechanism representing what each position in the sequence \"offers\" for comparison with queries.",
+          "layman": "Labels on filing cabinet drawers - they tell you what's inside each drawer when you're searching.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1706.03762\" class=\"reference-link\" target=\"_blank\">(Vaswani et al., 2017)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "5.5",
+          "name": "Value (Value Matrix)",
+          "technical": "Matrix in attention mechanism containing the actual content to be retrieved and aggregated based on attention weights.",
+          "layman": "The actual files inside the drawers - what you get when you find the right key match.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1706.03762\" class=\"reference-link\" target=\"_blank\">(Vaswani et al., 2017)</a>",
+          "hasFormula": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Model Architecture",
+      "className": "section-6",
+      "terms": [
+        {
+          "id": "6.1",
+          "name": "Internal Dimension (d)",
+          "technical": "Width of hidden representation vectors; controls expressiveness and compute per layer.",
+          "layman": "Size of the scratchpad each layer uses; bigger means more detail.",
+          "type": "Parameter<br/>d<sub>model</sub> = hidden dimension",
+          "hasFormula": false
+        },
+        {
+          "id": "6.2",
+          "name": "Neuron Count (n)",
+          "technical": "Number of neurons in the main state dimension (dominant scaling axis in non-transformer architectures).",
+          "layman": "Population of workers in the model's brain.",
+          "type": "Parameter<br/>n = neuron count",
+          "hasFormula": false
+        },
+        {
+          "id": "6.3",
+          "name": "Layer Index (l)",
+          "technical": "Depth position of a layer in the stack (1..L), often used to index per-layer states.",
+          "layman": "Which step of the recipe you're on.",
+          "type": "Parameter<br/>l ∈ {1, 2, ..., L}",
+          "hasFormula": false
+        },
+        {
+          "id": "6.4",
+          "name": "Transformer",
+          "technical": "Architecture using self-attention mechanisms to process sequences, enabling parallel computation and long-range dependencies.",
+          "layman": "A smart librarian that can instantly cross-reference any part of a document with any other part.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1706.03762\" class=\"reference-link\" target=\"_blank\">(Vaswani et al., 2017)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "6.5",
+          "name": "Alternative Architectures",
+          "technical": "Non-transformer designs like RNNs, CNNs, state-space models, and emerging architectures that process information differently.",
+          "layman": "Different brain designs - some think step-by-step, others see patterns, others use mathematical shortcuts.",
+          "type": "Concept<br/>(Various: RNN, CNN, SSM)",
+          "hasFormula": false
+        },
+        {
+          "id": "6.6",
+          "name": "Architecture",
+          "technical": "The overall structural design and computational flow of a neural network, defining how information moves through layers.",
+          "layman": "The blueprint for how the AI brain is wired together.",
+          "type": "Concept<br/>(Network Design)",
+          "hasFormula": false
+        },
+        {
+          "id": "6.7",
+          "name": "Encoder",
+          "technical": "Component that processes input data and converts it into internal representations, capturing the meaning and structure of the input.",
+          "layman": "The \"reader\" part that understands and summarizes the input into the model's internal language.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1706.03762\" class=\"reference-link\" target=\"_blank\">(Vaswani et al., 2017)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "6.8",
+          "name": "Decoder",
+          "technical": "Component that takes internal representations and generates output sequences, often used for text/code generation tasks.",
+          "layman": "The \"writer\" part that translates the model's internal understanding back into human-readable output.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1706.03762\" class=\"reference-link\" target=\"_blank\">(Vaswani et al., 2017)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "6.9",
+          "name": "MoE (Mixture of Experts)",
+          "technical": "Architecture that uses multiple specialized sub-networks (experts) where a gating mechanism routes inputs to the most relevant experts, allowing efficient scaling without proportional compute increase.",
+          "layman": "Like having a team of specialists where a smart dispatcher sends each question to the right expert instead of bothering everyone.",
+          "type": "Architecture<br/>(Neural Networks)",
+          "hasFormula": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Advanced Memory Systems",
+      "className": "section-7",
+      "terms": [
+        {
+          "id": "7.1",
+          "name": "σ (sigma)",
+          "technical": "In non-transformer architectures, an n×n matrix of synaptic weights encoding pairwise neuron relationships (edge state).",
+          "layman": "A giant map of who influences whom and by how much.",
+          "type": "Parameter<br/>σ ∈ ℝ<sup>n×n</sup> (synaptic matrix)",
+          "hasFormula": true,
+          "formulaId": "formula-sigma",
+          "variables": [
+            {"symbol": "σ", "description": "Synaptic weight matrix encoding neuron relationships"},
+            {"symbol": "n", "description": "Number of neurons in the layer"},
+            {"symbol": "ℝ<sup>n×n</sup>", "description": "Square real matrix space (n×n connections)"},
+            {"symbol": "σ<sub>ij</sub>", "description": "Weight of connection from neuron j to neuron i"}
+          ]
+        },
+        {
+          "id": "7.2",
+          "name": "ρ (rho)",
+          "technical": "In non-transformer architectures, an n×d neuron-aligned state matrix storing compressed, persistent values per neuron.",
+          "layman": "A spreadsheet where each neuron keeps a small current notepad.",
+          "type": "Parameter<br/>ρ ∈ ℝ<sup>n×d</sup> (neuron state matrix)",
+          "hasFormula": true,
+          "formulaId": "formula-rho",
+          "variables": [
+            {"symbol": "ρ", "description": "Neuron state matrix storing persistent values"},
+            {"symbol": "n", "description": "Number of neurons in the layer"},
+            {"symbol": "d", "description": "Dimension of state vector per neuron"},
+            {"symbol": "ℝ<sup>n×d</sup>", "description": "Real matrix space with n rows and d columns"}
+          ]
+        },
+        {
+          "id": "7.3",
+          "name": "U",
+          "technical": "A (typically diagonal or block-diagonal) matrix acting as a state transition operator for damping/rotation (e.g., ALiBi/RoPE effects).",
+          "layman": "A control that decides how old memories fade or oscillate over time.",
+          "type": "Parameter<br/>U (transition matrix)",
+          "hasFormula": false
+        },
+        {
+          "id": "7.4",
+          "name": "Synapse",
+          "technical": "Connection carrying influence between neurons; may store trainable weights or fast state.",
+          "layman": "Adjustable bridge where signals pass between neurons.",
+          "type": "Concept<br/>(McCulloch & Pitts, 1943)",
+          "hasFormula": false
+        },
+        {
+          "id": "7.5",
+          "name": "State-Space Systems",
+          "technical": "Mathematical frameworks representing system dynamics with state vectors that evolve over time, used in modern efficient architectures.",
+          "layman": "A mathematical recipe for how the AI's internal state changes as it processes each new piece of information.",
+          "type": "Formula<br/>x(t+1) = Ax(t) + Bu(t)",
+          "hasFormula": true,
+          "formulaId": "formula-statespace",
+          "variables": [
+            {"symbol": "x(t+1)", "description": "Next state vector"},
+            {"symbol": "x(t)", "description": "Current state vector"},
+            {"symbol": "A", "description": "State transition matrix"},
+            {"symbol": "B", "description": "Input matrix"},
+            {"symbol": "u(t)", "description": "Input vector at time t"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Performance & Efficiency",
+      "className": "section-8",
+      "terms": [
+        {
+          "id": "8.1",
+          "name": "Throughput",
+          "technical": "Tokens processed per second on a given system (training or inference).",
+          "layman": "Reading speed: how fast the model chews through text.",
+          "type": "Concept<br/>(Performance measure)",
+          "hasFormula": false
+        },
+        {
+          "id": "8.2",
+          "name": "Capacity",
+          "technical": "Upper bound on representable information/relationships given parameters and state size.",
+          "layman": "How much your notebook can hold.",
+          "type": "Concept<br/>(Information Theory)",
+          "hasFormula": false
+        },
+        {
+          "id": "8.3",
+          "name": "Efficiency",
+          "technical": "Performance per unit of compute/memory/energy (e.g., loss per FLOP, tokens/sec per watt).",
+          "layman": "How much useful work you get for the effort spent.",
+          "type": "Concept<br/>(Performance measure)",
+          "hasFormula": false
+        },
+        {
+          "id": "8.4",
+          "name": "FLOPs",
+          "technical": "Floating-point operations; a unit measuring arithmetic workload (compute cost).",
+          "layman": "How many calculator keystrokes the model performs.",
+          "type": "Concept<br/>(Computational measure)",
+          "hasFormula": false
+        },
+        {
+          "id": "8.5",
+          "name": "Test Time Compute",
+          "technical": "Additional computational resources allocated during inference to improve output quality, often through multiple sampling or reasoning steps.",
+          "layman": "Taking extra time to \"think harder\" when answering, like double-checking your work on an important test.",
+          "type": "Concept<br/>(OpenAI o1, 2024)",
+          "hasFormula": false
+        },
+        {
+          "id": "8.6",
+          "name": "Inference",
+          "technical": "The process of using a trained model to generate predictions or outputs on new input data without updating model parameters.",
+          "layman": "Using the trained AI to actually do work - like a graduate using their education to solve real problems.",
+          "type": "Concept<br/>(Forward pass)",
+          "hasFormula": false
+        },
+        {
+          "id": "8.7",
+          "name": "Latency",
+          "technical": "Time delay between submitting input to a model and receiving the output, critical for real-time applications.",
+          "layman": "How long you wait for the AI to respond - like the delay between asking a question and getting an answer.",
+          "type": "Concept<br/>(Performance measure)",
+          "hasFormula": false
+        },
+        {
+          "id": "8.8",
+          "name": "Compute Cost",
+          "technical": "Financial and energy expenses associated with training and running AI models, including hardware, electricity, and cloud services.",
+          "layman": "How much money it costs to train and run the AI - like paying for electricity and renting supercomputers.",
+          "type": "Concept<br/>(Economic measure)",
+          "hasFormula": false
+        },
+        {
+          "id": "8.9",
+          "name": "Scaling",
+          "technical": "Process of increasing model size, data, or compute resources to achieve better performance, following predictable patterns.",
+          "layman": "Making AI bigger and more powerful - like upgrading from a bicycle to a motorcycle to a race car.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2001.08361\" class=\"reference-link\" target=\"_blank\">(Kaplan et al., 2020)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "8.10",
+          "name": "Model Serving",
+          "technical": "Infrastructure and processes for making trained models available to handle requests and generate responses in production.",
+          "layman": "Setting up the AI to actually help real users - like opening a restaurant after learning to cook.",
+          "type": "Concept<br/>(MLOps deployment)",
+          "hasFormula": false
+        },
+        {
+          "id": "8.11",
+          "name": "Rate Limiting",
+          "technical": "Controlling how many requests users can make to prevent system overload and manage computational resources.",
+          "layman": "Preventing users from asking too many questions too fast - like having a \"one question per minute\" rule.",
+          "type": "Concept<br/>(Traffic control)",
+          "hasFormula": false
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Advanced Techniques",
+      "className": "section-9",
+      "terms": [
+        {
+          "id": "9.1",
+          "name": "Sparsity",
+          "technical": "Only a small fraction of activations or connections are nonzero at a time; reduces compute and can improve interpretability.",
+          "layman": "Only the relevant lights turn on, saving energy.",
+          "type": "Concept<br/>(Sparse networks)",
+          "hasFormula": false
+        },
+        {
+          "id": "9.2",
+          "name": "LoRA",
+          "technical": "Low-Rank Adaptation: fine-tuning method that updates small low-rank adapters instead of full weight matrices.",
+          "layman": "Add sticky-note corrections instead of rewriting the book.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2106.09685\" class=\"reference-link\" target=\"_blank\">(Hu et al., 2021)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "9.3",
+          "name": "Rotation (RoPE)",
+          "technical": "Rotary positional encoding applying complex/sinusoidal rotations to encode token positions.",
+          "layman": "Give each word a unique \"angle\" so order is baked into vectors.",
+          "type": "Formula<br/>RoPE: f(x,m) = x ⊙ e<sup>imθ</sup>",
+          "hasFormula": true,
+          "formulaId": "formula-rope",
+          "variables": [
+            {"symbol": "f(x,m)", "description": "Position-encoded vector"},
+            {"symbol": "x", "description": "Input vector"},
+            {"symbol": "m", "description": "Position index"},
+            {"symbol": "⊙", "description": "Element-wise multiplication"},
+            {"symbol": "e<sup>imθ</sup>", "description": "Complex rotation (Euler's formula)"},
+            {"symbol": "θ", "description": "Base angle for rotation"}
+          ]
+        },
+        {
+          "id": "9.4",
+          "name": "ALiBi (Attention with Linear Biases)",
+          "technical": "Positional encoding method that applies linearly increasing penalties to attention scores based on distance between tokens.",
+          "layman": "Like giving closer friends a louder voice in conversations - distant words get quieter automatically.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2108.12409\" class=\"reference-link\" target=\"_blank\">(Press et al., 2021)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "9.5",
+          "name": "Damping",
+          "technical": "Mechanism that gradually reduces the influence of older states/signals (often via U).",
+          "layman": "Echo that fades unless reinforced.",
+          "type": "Formula<br/>x(t) = γx(t-1) where γ < 1",
+          "hasFormula": true,
+          "formulaId": "formula-damping",
+          "variables": [
+            {"symbol": "x(t)", "description": "State at time t"},
+            {"symbol": "x(t-1)", "description": "State at previous time step"},
+            {"symbol": "γ", "description": "Damping factor (0 < γ < 1)"}
+          ]
+        },
+        {
+          "id": "9.6",
+          "name": "Modularity",
+          "technical": "Organization into semi-independent subcomponents that specialize and can be recombined.",
+          "layman": "Reusable LEGO blocks that form subsystems.",
+          "type": "Concept<br/>(Modular design)",
+          "hasFormula": false
+        },
+        {
+          "id": "9.7",
+          "name": "Test Time Learning",
+          "technical": "Adaptation or fine-tuning that occurs during inference, allowing models to adjust to new contexts or tasks without full retraining.",
+          "layman": "Learning new tricks on the spot, like adjusting your cooking technique mid-recipe based on how it's turning out.",
+          "type": "Concept<br/>(Dynamic adaptation)",
+          "hasFormula": false
+        },
+        {
+          "id": "9.8",
+          "name": "In-Context Weight Updates",
+          "technical": "Dynamic modification of model parameters during inference based on the current context, enabling real-time adaptation without gradient descent.",
+          "layman": "The AI rewiring itself on the fly - like your brain forming new connections as you learn something mid-conversation.",
+          "type": "Concept<br/>(Context-dependent weights)",
+          "hasFormula": false
+        },
+        {
+          "id": "9.9",
+          "name": "Meta-Learning",
+          "technical": "Learning algorithms that learn how to learn quickly, enabling rapid adaptation to new tasks with minimal examples.",
+          "layman": "Teaching AI to be a fast learner - like learning how to pick up any new skill quickly rather than starting from scratch each time.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1703.03400\" class=\"reference-link\" target=\"_blank\">(Finn et al., 2017)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "9.10",
+          "name": "Dynamic Neural Networks",
+          "technical": "Neural architectures that can modify their structure, connections, or weights during inference based on input characteristics.",
+          "layman": "AI that reshapes its brain for each problem - like having a Swiss Army knife that grows new tools as needed.",
+          "type": "Concept<br/>(Adaptive architectures)",
+          "hasFormula": false
+        },
+        {
+          "id": "9.11",
+          "name": "Temporal Behavior",
+          "technical": "How models process and maintain information across time steps, including memory persistence and sequential dependencies.",
+          "layman": "How the AI handles the flow of time - remembering what came before and anticipating what comes next.",
+          "type": "Concept<br/>(Time-series modeling)",
+          "hasFormula": false
+        },
+        {
+          "id": "9.12",
+          "name": "Chain of Thought (CoT)",
+          "technical": "Prompting technique where models are encouraged to show step-by-step reasoning before arriving at final answers.",
+          "layman": "Teaching AI to \"show its work\" - explaining each step of reasoning like solving a math problem on paper.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2201.11903\" class=\"reference-link\" target=\"_blank\">(Wei et al., 2022)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "9.13",
+          "name": "Reasoning",
+          "technical": "Model's ability to perform logical thinking, problem-solving, and step-by-step analysis to reach conclusions.",
+          "layman": "The AI's thinking process - connecting ideas, making logical jumps, and working through problems systematically.",
+          "type": "Concept<br/>(Logical inference)",
+          "hasFormula": false
+        },
+        {
+          "id": "9.14",
+          "name": "Multi-step Reasoning",
+          "technical": "Breaking down complex problems into sequential logical steps, with each step building on previous conclusions.",
+          "layman": "Solving complex puzzles by tackling one piece at a time, using each solution to inform the next step.",
+          "type": "Concept<br/>(Sequential reasoning)",
+          "hasFormula": false
+        },
+        {
+          "id": "9.15",
+          "name": "Temperature",
+          "technical": "Parameter controlling randomness in text generation - higher values increase creativity/randomness, lower values increase consistency.",
+          "layman": "The AI's \"creativity dial\" - turn it up for wild ideas, turn it down for predictable, safe responses.",
+          "type": "Formula<br/>P(w) = exp(logit/T) / Σexp(logit/T)",
+          "hasFormula": true,
+          "formulaId": "formula-temperature",
+          "variables": [
+            {"symbol": "P(w)", "description": "Probability of selecting word w"},
+            {"symbol": "logit", "description": "Raw score for word w from model"},
+            {"symbol": "T", "description": "Temperature parameter (higher = more random)"},
+            {"symbol": "exp", "description": "Exponential function"},
+            {"symbol": "Σ", "description": "Sum over all possible words"}
+          ]
+        },
+        {
+          "id": "9.16",
+          "name": "Top-k/Top-p Sampling",
+          "technical": "Techniques for selecting the next token during generation by limiting choices to the most likely k tokens or cumulative probability p.",
+          "layman": "Smart ways to pick the next word - either from the \"top 10 best choices\" or \"best choices that add up to 90% confidence\".",
+          "type": "Formula<br/>Top-k: P(w|ω<sub>&lt;t</sub>) for top k tokens",
+          "hasFormula": true,
+          "formulaId": "formula-topk",
+          "variables": [
+            {"symbol": "P(w|ω<sub>&lt;t</sub>)", "description": "Probability of word w given previous context"},
+            {"symbol": "w", "description": "Candidate word/token"},
+            {"symbol": "ω<sub>&lt;t</sub>", "description": "Previous tokens in sequence"},
+            {"symbol": "k", "description": "Number of top tokens to consider"}
+          ]
+        },
+        {
+          "id": "9.17",
+          "name": "Hallucination",
+          "technical": "When AI models generate plausible-sounding but factually incorrect, fabricated, or nonsensical information.",
+          "layman": "When AI confidently makes up facts - like a student giving a convincing wrong answer on a test.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2005.00661\" class=\"reference-link\" target=\"_blank\">(Maynez et al., 2020)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "9.18",
+          "name": "Tool Use",
+          "technical": "AI's ability to interact with external tools, APIs, and functions to perform tasks beyond text generation.",
+          "layman": "Teaching AI to use calculators, search engines, and other tools - like giving it access to a toolbox.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2302.12173\" class=\"reference-link\" target=\"_blank\">(Schick et al., 2023)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "9.19",
+          "name": "RAG (Retrieval Augmented Generation)",
+          "technical": "Technique combining text generation with external knowledge retrieval to provide more accurate and up-to-date responses.",
+          "layman": "Giving AI access to a library to look up facts - combining its knowledge with real-time research.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2005.11401\" class=\"reference-link\" target=\"_blank\">(Lewis et al., 2020)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "9.20",
+          "name": "Multimodal",
+          "technical": "AI systems that can process and generate multiple types of data including text, images, audio, and video.",
+          "layman": "AI that can see pictures, hear sounds, and read text all at once - like having multiple senses.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2103.00020\" class=\"reference-link\" target=\"_blank\">(Radford et al., 2021)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "9.21",
+          "name": "Interpretability",
+          "technical": "The degree to which humans can understand and explain AI model decisions, behaviors, and internal representations.",
+          "layman": "Understanding why AI made a specific choice - like being able to see the AI's \"thought process\" and reasoning.",
+          "type": "Concept<br/>(Lipton, 2018)",
+          "hasFormula": false
+        },
+        {
+          "id": "9.22",
+          "name": "Mechanistic Interpretability",
+          "technical": "Research field focused on reverse-engineering neural networks to understand the specific algorithms and circuits they learn.",
+          "layman": "Taking apart the AI's brain to see exactly how each piece works - like dissecting a watch to understand timekeeping.",
+          "type": "Concept<br/><a href=\"https://distill.pub/2020/circuits/zoom-in/\" class=\"reference-link\" target=\"_blank\">(Olah et al., 2020)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "9.23",
+          "name": "Transfer Learning",
+          "technical": "Technique where knowledge gained from training on one task is applied to related tasks, typically through pre-training on large datasets then fine-tuning on specific tasks.",
+          "layman": "Like learning to drive a car first, then easily picking up how to drive a truck - transferring basic skills to new situations.",
+          "type": "Concept<br/>(ML Paradigm)",
+          "hasFormula": false
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Training Outcomes",
+      "className": "section-10",
+      "terms": [
+        {
+          "id": "10.1",
+          "name": "Convergence",
+          "technical": "Training phase where loss plateaus near an optimum; further improvements are marginal.",
+          "layman": "Practice stops yielding big gains — you've mostly learned it.",
+          "type": "Concept<br/>(Optimization theory)",
+          "hasFormula": false
+        },
+        {
+          "id": "10.2",
+          "name": "Quality / Validation Loss",
+          "technical": "Validation loss measures prediction error on held-out data; a proxy for generalization and perceived model quality.",
+          "layman": "How well you do on the real test, not just practice problems.",
+          "type": "Formula<br/>L<sub>val</sub> = E[L(f(θ),y)]",
+          "hasFormula": true,
+          "formulaId": "formula-validation",
+          "variables": [
+            {"symbol": "L<sub>val</sub>", "description": "Validation loss"},
+            {"symbol": "E[...]", "description": "Expected value (average)"},
+            {"symbol": "L", "description": "Loss function"},
+            {"symbol": "f(θ)", "description": "Model with parameters θ"},
+            {"symbol": "y", "description": "True target values"}
+          ]
+        },
+        {
+          "id": "10.3",
+          "name": "Emergence",
+          "technical": "Appearance of qualitatively new abilities as scale crosses certain thresholds.",
+          "layman": "The \"suddenly it clicks\" phenomenon (e.g., spontaneous reasoning).",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/2201.11903\" class=\"reference-link\" target=\"_blank\">(Wei et al., 2022)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "10.4",
+          "name": "Scaling Laws",
+          "technical": "Empirical relationships describing how model performance improves predictably with increases in model size, data, or compute.",
+          "layman": "Rules of thumb for how much better AI gets when you make it bigger, like \"double the size, get 10% better performance.\"",
+          "type": "Formula<br/>L(N) = aN<sup>-α</sup> + L<sub>∞</sub>",
+          "hasFormula": true,
+          "formulaId": "formula-scaling",
+          "variables": [
+            {"symbol": "L(N)", "description": "Loss as a function of model size N"},
+            {"symbol": "N", "description": "Number of parameters (model size)"},
+            {"symbol": "a", "description": "Scaling coefficient"},
+            {"symbol": "α", "description": "Scaling exponent (power law slope)"},
+            {"symbol": "L<sub>∞</sub>", "description": "Irreducible loss (theoretical minimum)"}
+          ]
+        },
+        {
+          "id": "10.5",
+          "name": "Overfitting",
+          "technical": "When a model memorizes training data too well and fails to generalize to new examples, performing worse on unseen data.",
+          "layman": "Studying only past exam questions so well that you can't handle new problems - knowing the answers but not understanding the concepts.",
+          "type": "Concept<br/>(Bias-variance tradeoff)",
+          "hasFormula": false
+        },
+        {
+          "id": "10.6",
+          "name": "Benchmarks",
+          "technical": "Standardized tests and datasets used to evaluate and compare AI model performance across different capabilities.",
+          "layman": "Like standardized tests (SAT, GRE) for AI - everyone takes the same test so you can compare who's smarter.",
+          "type": "Concept<br/>(Evaluation framework)",
+          "hasFormula": false
+        },
+        {
+          "id": "10.7",
+          "name": "Evaluation Metrics",
+          "technical": "Quantitative measures used to assess model performance, including accuracy, loss, BLEU scores, and task-specific metrics.",
+          "layman": "Different ways to grade the AI's performance - like using different scoring systems for different types of tests.",
+          "type": "Concept<br/>(Evaluation measures)",
+          "hasFormula": false
+        },
+        {
+          "id": "10.8",
+          "name": "Leaderboards",
+          "technical": "Public rankings of AI models based on benchmark performance, driving competition and progress measurement in the field.",
+          "layman": "High score lists showing which AI models are currently the best at different tasks - like arcade game leaderboards.",
+          "type": "Concept<br/>(Performance tracking)",
+          "hasFormula": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Infrastructure",
+      "className": "section-11",
+      "terms": [
+        {
+          "id": "11.1",
+          "name": "Substrate",
+          "technical": "The computational medium or architecture where the model runs (GPUs/TPUs, neuromorphic hardware, etc.).",
+          "layman": "The material your \"AI brain\" is built from (silicon chips, specialized hardware).",
+          "type": "Concept<br/>(Computing hardware)",
+          "hasFormula": false
+        },
+        {
+          "id": "11.2",
+          "name": "Kernels",
+          "technical": "Small programs that run on GPUs to perform specific computational tasks like matrix multiplication, convolution, or attention operations.",
+          "layman": "Specialized mini-programs that tell the graphics card exactly how to do one specific math operation really fast.",
+          "type": "Concept<br/>(GPU programming)",
+          "hasFormula": false
+        },
+        {
+          "id": "11.3",
+          "name": "CUDA",
+          "technical": "NVIDIA's parallel computing platform and programming model that enables GPUs to perform general-purpose computing tasks.",
+          "layman": "The language that lets regular programs talk to NVIDIA graphics cards and use their thousands of tiny processors.",
+          "type": "Concept<br/>(NVIDIA, 2006)",
+          "hasFormula": false
+        },
+        {
+          "id": "11.4",
+          "name": "Memory Bandwidth",
+          "technical": "The rate at which data can be transferred between the processor and memory, often a bottleneck in AI computations.",
+          "layman": "How fast the highway is between the brain (processor) and its filing cabinet (memory) - traffic jams slow everything down.",
+          "type": "Concept<br/>(Performance measure)",
+          "hasFormula": false
+        },
+        {
+          "id": "11.5",
+          "name": "Parallel Processing",
+          "technical": "Performing multiple computations simultaneously across many cores or processors to accelerate AI training and inference.",
+          "layman": "Having thousands of workers doing math problems at the same time instead of one worker doing them one by one.",
+          "type": "Concept<br/>(Flynn's taxonomy)",
+          "hasFormula": false
+        },
+        {
+          "id": "11.6",
+          "name": "Hardware Acceleration",
+          "technical": "Using specialized chips (GPUs, TPUs, custom ASICs) optimized for AI workloads to achieve faster computation than general CPUs.",
+          "layman": "Using purpose-built race cars instead of family sedans for high-speed computing tasks.",
+          "type": "Concept<br/>(Specialized computing)",
+          "hasFormula": false
+        },
+        {
+          "id": "11.7",
+          "name": "Deep Learning Frameworks",
+          "technical": "Software libraries that provide tools and abstractions for building, training, and deploying neural networks efficiently.",
+          "layman": "Pre-built toolkits with all the parts you need to build AI models, like having a workshop with all tools organized.",
+          "type": "Concept<br/>(Software abstraction)",
+          "hasFormula": false
+        },
+        {
+          "id": "11.8",
+          "name": "PyTorch",
+          "technical": "Open-source deep learning framework developed by Meta, known for dynamic computation graphs and ease of research use.",
+          "layman": "A flexible AI workshop where you can experiment and change your design as you build - popular with researchers.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1912.01703\" class=\"reference-link\" target=\"_blank\">(Paszke et al., 2019)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "11.9",
+          "name": "TensorFlow",
+          "technical": "Open-source deep learning framework developed by Google, known for production deployment and static computation graphs.",
+          "layman": "A structured AI assembly line optimized for building and deploying finished products at scale.",
+          "type": "Concept<br/><a href=\"https://arxiv.org/abs/1603.04467\" class=\"reference-link\" target=\"_blank\">(Abadi et al., 2016)</a>",
+          "hasFormula": false
+        },
+        {
+          "id": "11.10",
+          "name": "Computational Graphs",
+          "technical": "Mathematical representations of neural network operations as directed graphs, enabling automatic differentiation and optimization.",
+          "layman": "A flowchart showing how data moves through calculations, making it easy for computers to work backwards and learn.",
+          "type": "Concept<br/>(Graph theory)",
+          "hasFormula": false
+        },
+        {
+          "id": "11.11",
+          "name": "Automatic Differentiation",
+          "technical": "Technique for automatically computing gradients of complex functions, essential for backpropagation in neural networks.",
+          "layman": "A mathematical assistant that automatically figures out how to adjust each knob when you know the final mistake.",
+          "type": "Formula<br/>∂f/∂x via chain rule",
+          "hasFormula": true,
+          "formulaId": "formula-autodiff",
+          "variables": [
+            {"symbol": "∂f/∂x", "description": "Partial derivative of f with respect to x"},
+            {"symbol": "f", "description": "Function to differentiate"},
+            {"symbol": "x", "description": "Variable with respect to which we differentiate"},
+            {"symbol": "chain rule", "description": "∂f/∂x = (∂f/∂g) × (∂g/∂x)"}
+          ]
+        },
+        {
+          "id": "11.12",
+          "name": "Model Deployment",
+          "technical": "Process of taking a trained model and making it available for use in production environments, including scaling and monitoring.",
+          "layman": "Taking the trained AI from the lab and putting it to work in the real world - like launching a new product.",
+          "type": "Concept<br/>(MLOps)",
+          "hasFormula": false
+        },
+        {
+          "id": "11.13",
+          "name": "API Endpoints",
+          "technical": "Standardized interfaces that allow applications to interact with AI models, typically through HTTP requests and responses.",
+          "layman": "Like a drive-through window for AI - a standard way for other programs to ask questions and get answers.",
+          "type": "Concept<br/>(REST API)",
+          "hasFormula": false
+        }
+      ]
+    }
+  ]
+}

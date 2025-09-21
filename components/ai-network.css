@@ -1,0 +1,389 @@
+/* AI Network Graph Styles */
+#ai-tree {
+    position: relative;
+}
+
+.ai-network {
+    margin: 2rem 0;
+    padding: 2rem;
+    background-color: #000000;
+    border-radius: 8px;
+    border: 1px solid #3e3e42;
+    overflow: hidden;
+    display: flex;
+    gap: 2rem;
+    height: 800px;
+    position: relative;
+}
+
+/* Legend Panel (Bottom Left) */
+.legend-panel-bottom {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 250px;
+    background-color: rgba(26, 26, 26, 0.5) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-radius: 6px;
+    border: 1px solid rgba(62, 62, 66, 0.5) !important;
+    padding: 1rem;
+    z-index: 100;
+}
+
+/* Filter Panel (Right Side) */
+.filter-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: rgba(26, 26, 26, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 6px;
+    border: 1px solid rgba(62, 62, 66, 0.5);
+    padding: 1rem;
+    max-height: 800px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.filter-header {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #3e3e42;
+    padding-bottom: 0.5rem;
+}
+
+.filter-title {
+    color: #E3D617;
+    font-family: 'Consolas', monospace;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+.filter-control-btn {
+    background-color: #2a2a2a;
+    border: 1px solid #BDCEA9;
+    color: #BDCEA9;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 10px;
+    font-family: 'Consolas', monospace;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.filter-control-btn:hover {
+    background-color: #BDCEA9;
+    color: #000000;
+}
+
+.legend-title {
+    color: #E3D617;
+    font-family: 'Consolas', monospace;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #3e3e42;
+    padding-bottom: 0.5rem;
+}
+
+.legend-section h4 {
+    color: #BDCEA9;
+    font-size: 12px;
+    margin: 0.25rem 0;
+    font-weight: normal;
+}
+
+/* Graph Container */
+.graph-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.network-svg {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+
+.network-svg:active {
+    cursor: grabbing;
+}
+
+/* Node Styles */
+.network-node {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.network-node.core circle {
+    fill: #1a5194;
+    stroke: #ffffff;
+    stroke-width: 3;
+}
+
+.network-node.major circle {
+    fill: #908258;
+    stroke: #ffffff;
+    stroke-width: 2;
+}
+
+.network-node.specialized circle {
+    fill: #845353;
+    stroke: #ffffff;
+    stroke-width: 2;
+}
+
+.network-node.niche circle {
+    fill: #84a476;
+    stroke: #ffffff;
+    stroke-width: 1;
+}
+
+/* Node Text */
+.network-node text {
+    fill: #ffffff;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    text-anchor: middle;
+    pointer-events: none;
+    font-weight: bold;
+}
+
+.outside-text {
+    font-size: 11px !important;
+    font-weight: normal !important;
+}
+
+/* Node Hover Effects */
+.network-node:hover circle {
+    stroke-width: 4;
+    filter: brightness(1.2);
+}
+
+.network-node.highlighted-from-legend circle {
+    stroke: #E3D617;
+    stroke-width: 4;
+    filter: brightness(1.3);
+}
+
+/* Link Styles */
+.network-link {
+    stroke-opacity: 0.6;
+    stroke-width: 2;
+    transition: all 0.3s ease;
+}
+
+.network-link.strong {
+    stroke-width: 3;
+    stroke-opacity: 0.8;
+}
+
+.network-link.medium {
+    stroke-width: 2;
+    stroke-opacity: 0.6;
+}
+
+.network-link.normal {
+    stroke-width: 1.5;
+    stroke-opacity: 0.5;
+}
+
+.network-link.weak {
+    stroke-width: 1;
+    stroke-opacity: 0.3;
+}
+
+/* Filter Items - Clean VS Code Style */
+.filter-item {
+    padding: 0.2rem 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.filter-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.filter-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.3rem;
+    width: 100%;
+}
+
+.expand-arrow {
+    width: 0.8rem;
+    cursor: pointer;
+    user-select: none;
+    font-family: monospace;
+    font-size: 10px;
+    font-weight: bold;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+.expand-arrow:hover {
+    transform: scale(1.2);
+}
+
+.expand-arrow-spacer {
+    width: 0.8rem;
+    display: inline-block;
+}
+
+.filter-text {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Removed old filter CSS - using new clean structure above */
+
+/* Control Buttons */
+.expand-btn {
+    background: transparent;
+    border: 1px solid #BDCEA9;
+    color: #BDCEA9;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin-right: 0.25rem;
+}
+
+.expand-btn:hover {
+    background-color: #BDCEA9;
+    color: #000000;
+}
+
+.visibility-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.visibility-btn:hover {
+    background-color: #2a2a2a;
+}
+
+.zoom-btn {
+    background-color: #2a2a2a;
+    border: 1px solid #BDCEA9;
+    color: #BDCEA9;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-family: 'Consolas', monospace;
+}
+
+.zoom-btn:hover {
+    background-color: #2575D5;
+    color: #E3D617;
+    border-color: #2575D5;
+}
+
+.zoom-controls {
+    display: flex;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.zoom-section h4 {
+    color: #CEBA7E;
+    font-size: 12px;
+    margin: 0.5rem 0 0.25rem 0;
+    font-weight: normal;
+}
+
+/* Legend Item Highlighting */
+.legend-item {
+    transition: background-color 0.2s ease;
+    padding: 0.25rem;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.legend-item:hover, .legend-item.highlighted {
+    background-color: #2a2a2a;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .ai-network {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .filter-panel {
+        position: static;
+        width: 100%;
+        max-height: 300px;
+        margin-bottom: 1rem;
+    }
+
+    .legend-panel-bottom {
+        position: static;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .graph-container {
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ai-network {
+        padding: 1rem;
+    }
+
+    .graph-container {
+        min-height: 400px;
+    }
+}
+
+/* Force transparency for panels - override any conflicting styles */
+.filter-panel,
+.legend-panel-bottom {
+    background-color: rgba(26, 26, 26, 0.5) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(62, 62, 66, 0.5) !important;
+}
