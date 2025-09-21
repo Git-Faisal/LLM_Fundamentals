@@ -45,7 +45,7 @@
     padding: 1rem;
     max-height: 800px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 900;
 }
 
 .filter-header {
