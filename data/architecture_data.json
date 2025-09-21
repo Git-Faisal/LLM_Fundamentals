@@ -237,6 +237,515 @@
           "content": "Sequential • Memory • Vanishing gradients"
         }
       ]
+    },
+    {
+      "id": "cnn",
+      "order": 3,
+      "title": "Convolutional Neural Network (CNN)",
+      "description": "Local pattern detection using sliding filters",
+      "classDefinition": "class ConvolutionalNeuralNetwork(input_image):",
+      "codeSteps": [
+        {
+          "stepId": "cnn-input",
+          "lines": [
+            "# Step 1: Input preprocessing",
+            "image = normalize(input_image)  # [height, width, channels] → [224, 224, 3]",
+            "# Normalize pixel values to [0,1] range for stable training"
+          ]
+        },
+        {
+          "stepId": "cnn-conv",
+          "lines": [
+            "# Step 2: Convolutional layers - detect local patterns",
+            "for layer in conv_layers:",
+            "    # Apply multiple filters across the image",
+            "    filters = layer.weights  # [filter_height, filter_width, in_channels, out_channels]",
+            "    ",
+            "    # Slide each filter across the image",
+            "    feature_maps = []",
+            "    for i in range(0, height - filter_size + 1, stride):",
+            "        for j in range(0, width - filter_size + 1, stride):",
+            "            # Extract local patch",
+            "            patch = image[i:i+filter_size, j:j+filter_size]",
+            "            # Compute dot product (convolution)",
+            "            activation = sum(patch * filter) + bias",
+            "            feature_maps.append(activation)",
+            "    ",
+            "    # Each filter detects different patterns: edges, corners, textures"
+          ]
+        },
+        {
+          "stepId": "cnn-activation",
+          "lines": [
+            "# Step 3: Apply activation function",
+            "activated = relu(feature_maps)  # Remove negative values",
+            "# ReLU helps network learn complex patterns by introducing non-linearity"
+          ]
+        },
+        {
+          "stepId": "cnn-pooling",
+          "lines": [
+            "# Step 4: Pooling - reduce spatial dimensions",
+            "pooled = max_pool(activated, pool_size=2, stride=2)",
+            "# Take maximum value in each 2x2 region",
+            "# Reduces computation and provides translation invariance",
+            "# [224,224] → [112,112] → [56,56] → [28,28] ..."
+          ]
+        },
+        {
+          "stepId": "cnn-flatten",
+          "lines": [
+            "# Step 5: Flatten for final layers",
+            "flattened = flatten(final_feature_maps)  # [28,28,512] → [401,408]",
+            "# Convert 2D feature maps to 1D vector for classification"
+          ]
+        },
+        {
+          "stepId": "cnn-classify",
+          "lines": [
+            "# Step 6: Classification layers",
+            "logits = fully_connected(flattened)",
+            "predictions = softmax(logits)  # Probability over classes",
+            "return predictions  # [batch_size, num_classes]",
+            "",
+            "# Key Characteristics:",
+            "# → Local connectivity: each neuron sees small region",
+            "# → Weight sharing: same filter used across entire image",
+            "# → Translation invariance: detects patterns regardless of position"
+          ]
+        }
+      ],
+      "diagramBlocks": [
+        {
+          "stepId": "cnn-input",
+          "label": "Input Image",
+          "content": "224×224×3 Normalize pixel values [0,1]"
+        },
+        {
+          "stepId": "cnn-conv",
+          "label": "Convolution",
+          "content": "Sliding filters detect local patterns"
+        },
+        {
+          "stepId": "cnn-activation",
+          "label": "ReLU Activation",
+          "content": "Remove negative values, add non-linearity"
+        },
+        {
+          "stepId": "cnn-pooling",
+          "label": "Max Pooling",
+          "content": "Downsample: 224×224 → 112×112 → 56×56"
+        },
+        {
+          "stepId": "cnn-flatten",
+          "label": "Flatten",
+          "content": "2D feature maps → 1D vector"
+        },
+        {
+          "stepId": "cnn-classify",
+          "label": "Classification",
+          "content": "Fully connected → softmax → predictions"
+        }
+      ]
+    },
+    {
+      "id": "lstm",
+      "order": 4,
+      "title": "Long Short-Term Memory (LSTM)",
+      "description": "RNN with gated memory to handle long sequences",
+      "classDefinition": "class LSTMNetwork(input_sequence):",
+      "codeSteps": [
+        {
+          "stepId": "lstm-init",
+          "lines": [
+            "# Step 1: Initialize states",
+            "cell_state = zeros(hidden_size)    # Long-term memory",
+            "hidden_state = zeros(hidden_size)  # Short-term memory",
+            "# LSTM maintains two types of memory unlike vanilla RNN"
+          ]
+        },
+        {
+          "stepId": "lstm-gates",
+          "lines": [
+            "# Step 2: Process each timestep with three gates",
+            "for t in range(len(input_sequence)):",
+            "    x_t = embed(input_sequence[t])",
+            "    ",
+            "    # Forget Gate: what to remove from cell state",
+            "    forget_gate = sigmoid(W_f @ [h_prev, x_t] + b_f)",
+            "    # Values close to 0 = forget, close to 1 = remember",
+            "    ",
+            "    # Input Gate: what new information to store",
+            "    input_gate = sigmoid(W_i @ [h_prev, x_t] + b_i)",
+            "    candidate = tanh(W_c @ [h_prev, x_t] + b_c)",
+            "    # input_gate controls how much of candidate to add"
+          ]
+        },
+        {
+          "stepId": "lstm-memory",
+          "lines": [
+            "    # Update cell state (long-term memory)",
+            "    cell_state = forget_gate * cell_state + input_gate * candidate",
+            "    # Selectively forget old info and add new info",
+            "    # This prevents vanishing gradients in long sequences"
+          ]
+        },
+        {
+          "stepId": "lstm-output",
+          "lines": [
+            "    # Output Gate: what parts of cell state to output",
+            "    output_gate = sigmoid(W_o @ [h_prev, x_t] + b_o)",
+            "    hidden_state = output_gate * tanh(cell_state)",
+            "    # Filter cell state to produce current output"
+          ]
+        },
+        {
+          "stepId": "lstm-characteristics",
+          "lines": [
+            "# Key Advantages over RNN:",
+            "# → Solves vanishing gradient problem",
+            "# → Can remember information for long periods",
+            "# → Three gates provide fine-grained control",
+            "# → Forget gate prevents irrelevant information accumulation",
+            "",
+            "return hidden_states  # All timestep outputs"
+          ]
+        }
+      ],
+      "diagramBlocks": [
+        {
+          "stepId": "lstm-init",
+          "label": "Initialize States",
+          "content": "cell_state & hidden_state = zeros()"
+        },
+        {
+          "stepId": "lstm-gates",
+          "label": "Three Gates",
+          "content": "Forget → Input → Output gates control information flow"
+        },
+        {
+          "stepId": "lstm-memory",
+          "label": "Update Memory",
+          "content": "C_t = f_t ⊙ C_{t-1} + i_t ⊙ Ĉ_t"
+        },
+        {
+          "stepId": "lstm-output",
+          "label": "Generate Output",
+          "content": "h_t = o_t ⊙ tanh(C_t)"
+        },
+        {
+          "stepId": "lstm-characteristics",
+          "label": "LSTM Benefits",
+          "content": "Long memory • No vanishing gradients • Gated control"
+        }
+      ]
+    },
+    {
+      "id": "mamba",
+      "order": 5,
+      "title": "State-Space Models (Mamba)",
+      "description": "Efficient long sequence modeling with selective state spaces",
+      "classDefinition": "class MambaModel(input_sequence):",
+      "codeSteps": [
+        {
+          "stepId": "mamba-embed",
+          "lines": [
+            "# Step 1: Input embedding",
+            "x = embed(input_sequence)  # [seq_len, d_model]",
+            "# Convert tokens to dense representations"
+          ]
+        },
+        {
+          "stepId": "mamba-selective",
+          "lines": [
+            "# Step 2: Selective state space mechanism",
+            "# Unlike fixed state spaces, Mamba makes parameters input-dependent",
+            "A = make_A_input_dependent(x)  # State transition matrix",
+            "B = make_B_input_dependent(x)  # Input matrix",
+            "C = make_C_input_dependent(x)  # Output matrix",
+            "# This selectivity allows focusing on relevant information"
+          ]
+        },
+        {
+          "stepId": "mamba-discretize",
+          "lines": [
+            "# Step 3: Discretization for digital processing",
+            "delta = softplus(learned_delta(x))  # Adaptive step size",
+            "A_bar = exp(delta * A)  # Discretized A matrix",
+            "B_bar = delta * B       # Discretized B matrix",
+            "# Convert continuous system to discrete for computation"
+          ]
+        },
+        {
+          "stepId": "mamba-scan",
+          "lines": [
+            "# Step 4: Efficient parallel scan",
+            "# State evolution: h_t = A_bar * h_{t-1} + B_bar * x_t",
+            "states = parallel_scan(A_bar, B_bar, x)",
+            "# Compute all states in parallel O(log n) time instead of O(n)",
+            "# This is key to Mamba's efficiency advantage"
+          ]
+        },
+        {
+          "stepId": "mamba-output",
+          "lines": [
+            "# Step 5: Generate outputs",
+            "outputs = C @ states  # Linear combination of states",
+            "# Gated linear unit for expressiveness",
+            "gated_outputs = GLU(outputs)",
+            "",
+            "return gated_outputs",
+            "",
+            "# Advantages:",
+            "# → Linear scaling with sequence length (vs quadratic for Transformers)",
+            "# → Selective attention to relevant information",
+            "# → Efficient training and inference"
+          ]
+        }
+      ],
+      "diagramBlocks": [
+        {
+          "stepId": "mamba-embed",
+          "label": "Input Embedding",
+          "content": "Tokens → dense vectors [seq_len, d_model]"
+        },
+        {
+          "stepId": "mamba-selective",
+          "label": "Selective Parameters",
+          "content": "A, B, C = f(input) Input-dependent state space"
+        },
+        {
+          "stepId": "mamba-discretize",
+          "label": "Discretization",
+          "content": "Continuous → discrete with adaptive Δ"
+        },
+        {
+          "stepId": "mamba-scan",
+          "label": "Parallel Scan",
+          "content": "Efficient O(log n) state computation"
+        },
+        {
+          "stepId": "mamba-output",
+          "label": "Output Generation",
+          "content": "Linear scaling • Selective attention"
+        }
+      ]
+    },
+    {
+      "id": "gnn",
+      "order": 6,
+      "title": "Graph Neural Networks (GNN)",
+      "description": "Neural networks for graph-structured data",
+      "classDefinition": "class GraphNeuralNetwork(graph):",
+      "codeSteps": [
+        {
+          "stepId": "gnn-init",
+          "lines": [
+            "# Step 1: Initialize node features",
+            "node_features = initialize_features(graph.nodes)",
+            "# Each node starts with initial feature vector",
+            "# Could be one-hot encoding, random, or domain-specific features"
+          ]
+        },
+        {
+          "stepId": "gnn-message",
+          "lines": [
+            "# Step 2: Message passing between connected nodes",
+            "for layer in range(num_layers):",
+            "    messages = {}",
+            "    ",
+            "    # Each node creates messages for its neighbors",
+            "    for node in graph.nodes:",
+            "        for neighbor in graph.neighbors(node):",
+            "            # Transform node features into message",
+            "            message = W_message @ node_features[node]",
+            "            messages[(node, neighbor)] = message"
+          ]
+        },
+        {
+          "stepId": "gnn-aggregate",
+          "lines": [
+            "    # Step 3: Aggregate messages at each node",
+            "    aggregated = {}",
+            "    for node in graph.nodes:",
+            "        # Collect all messages sent to this node",
+            "        incoming_messages = [messages[(neighbor, node)] ",
+            "                           for neighbor in graph.neighbors(node)]",
+            "        ",
+            "        # Aggregate (sum, mean, max, or attention-weighted)",
+            "        aggregated[node] = sum(incoming_messages)  # or mean, max"
+          ]
+        },
+        {
+          "stepId": "gnn-update",
+          "lines": [
+            "    # Step 4: Update node features",
+            "    new_features = {}",
+            "    for node in graph.nodes:",
+            "        # Combine old features with aggregated messages",
+            "        combined = concat([node_features[node], aggregated[node]])",
+            "        new_features[node] = relu(W_update @ combined + bias)",
+            "    ",
+            "    node_features = new_features  # Update for next layer"
+          ]
+        },
+        {
+          "stepId": "gnn-readout",
+          "lines": [
+            "# Step 5: Graph-level prediction (if needed)",
+            "if graph_level_task:",
+            "    # Combine all node features into graph representation",
+            "    graph_embedding = mean([node_features[node] for node in graph.nodes])",
+            "    prediction = classifier(graph_embedding)",
+            "else:",
+            "    # Node-level predictions",
+            "    predictions = {node: classifier(node_features[node]) ",
+            "                  for node in graph.nodes}",
+            "",
+            "return predictions"
+          ]
+        }
+      ],
+      "diagramBlocks": [
+        {
+          "stepId": "gnn-init",
+          "label": "Initialize Features",
+          "content": "Each node gets initial feature vector"
+        },
+        {
+          "stepId": "gnn-message",
+          "label": "Message Creation",
+          "content": "Nodes send messages to neighbors"
+        },
+        {
+          "stepId": "gnn-aggregate",
+          "label": "Message Aggregation",
+          "content": "Sum/mean/max incoming messages"
+        },
+        {
+          "stepId": "gnn-update",
+          "label": "Feature Update",
+          "content": "Combine old features + aggregated messages"
+        },
+        {
+          "stepId": "gnn-readout",
+          "label": "Final Prediction",
+          "content": "Node-level or graph-level outputs"
+        }
+      ]
+    },
+    {
+      "id": "gat",
+      "order": 7,
+      "title": "Graph Attention Networks (GAT)",
+      "description": "Graph Neural Networks with attention mechanism",
+      "classDefinition": "class GraphAttentionNetwork(graph):",
+      "codeSteps": [
+        {
+          "stepId": "gat-features",
+          "lines": [
+            "# Step 1: Node feature transformation",
+            "h = W @ node_features  # Linear transformation",
+            "# Transform input features to attention space",
+            "# [num_nodes, in_features] → [num_nodes, out_features]"
+          ]
+        },
+        {
+          "stepId": "gat-attention",
+          "lines": [
+            "# Step 2: Compute attention coefficients",
+            "attention_scores = {}",
+            "for node_i in graph.nodes:",
+            "    for node_j in graph.neighbors(node_i):",
+            "        # Concatenate features of connected nodes",
+            "        concat_features = concat([h[node_i], h[node_j]])",
+            "        ",
+            "        # Compute attention score",
+            "        e_ij = leaky_relu(a^T @ concat_features)",
+            "        attention_scores[(node_i, node_j)] = e_ij",
+            "        # Higher score = more important neighbor"
+          ]
+        },
+        {
+          "stepId": "gat-normalize",
+          "lines": [
+            "# Step 3: Normalize attention coefficients",
+            "attention_weights = {}",
+            "for node_i in graph.nodes:",
+            "    # Get all attention scores for node_i's neighbors",
+            "    neighbor_scores = [attention_scores[(node_i, j)] ",
+            "                      for j in graph.neighbors(node_i)]",
+            "    ",
+            "    # Apply softmax normalization",
+            "    normalized = softmax(neighbor_scores)",
+            "    for idx, neighbor in enumerate(graph.neighbors(node_i)):",
+            "        attention_weights[(node_i, neighbor)] = normalized[idx]"
+          ]
+        },
+        {
+          "stepId": "gat-aggregate",
+          "lines": [
+            "# Step 4: Weighted aggregation",
+            "new_features = {}",
+            "for node_i in graph.nodes:",
+            "    # Weighted sum of neighbor features",
+            "    weighted_sum = zeros(feature_dim)",
+            "    for neighbor in graph.neighbors(node_i):",
+            "        weight = attention_weights[(node_i, neighbor)]",
+            "        weighted_sum += weight * h[neighbor]",
+            "    ",
+            "    new_features[node_i] = weighted_sum",
+            "    # Important neighbors contribute more to the update"
+          ]
+        },
+        {
+          "stepId": "gat-multihead",
+          "lines": [
+            "# Step 5: Multi-head attention (optional)",
+            "# Run multiple attention heads in parallel",
+            "multi_head_outputs = []",
+            "for head in range(num_heads):",
+            "    head_output = single_attention_head(graph, h)",
+            "    multi_head_outputs.append(head_output)",
+            "",
+            "# Concatenate or average multiple heads",
+            "final_output = concat(multi_head_outputs)  # or mean",
+            "",
+            "return final_output",
+            "",
+            "# Advantages over standard GNN:",
+            "# → Learns which neighbors are most important",
+            "# → Different attention patterns for different relationships"
+          ]
+        }
+      ],
+      "diagramBlocks": [
+        {
+          "stepId": "gat-features",
+          "label": "Feature Transform",
+          "content": "Linear transformation: W @ node_features"
+        },
+        {
+          "stepId": "gat-attention",
+          "label": "Attention Scores",
+          "content": "e_ij = LeakyReLU(a^T[h_i||h_j])"
+        },
+        {
+          "stepId": "gat-normalize",
+          "label": "Softmax Normalize",
+          "content": "α_ij = softmax(e_ij) Sum to 1"
+        },
+        {
+          "stepId": "gat-aggregate",
+          "label": "Weighted Sum",
+          "content": "h'_i = Σ α_ij * h_j Attention-weighted"
+        },
+        {
+          "stepId": "gat-multihead",
+          "label": "Multi-Head",
+          "content": "Parallel attention • Learn different patterns"
+        }
+      ]
     }
   ]
 }
