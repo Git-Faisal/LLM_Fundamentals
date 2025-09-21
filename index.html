@@ -703,57 +703,88 @@
         // Render architecture data
         function renderArchitectures(architectures) {
             const container = document.getElementById('architectures');
-
-            let html = '<h2 class="section-title">Common Architectures</h2>';
+            container.innerHTML = '<h2 class="section-title">Common Architectures</h2>';
 
             architectures.forEach(arch => {
-                html += `
-                    <div style="margin-bottom: 50px;">
-                        <h3 style="color: #BD9178; font-size: 20px; margin-bottom: 20px; font-family: 'Consolas', monospace;">
-                            ${arch.order}. ${arch.title}
-                        </h3>
+                // Create architecture section
+                const archSection = document.createElement('div');
+                archSection.style.marginBottom = '50px';
 
-                        <!-- Two-column layout: Code on left, Diagram on right -->
-                        <div class="transformer-layout" style="display: flex; gap: 30px; align-items: flex-start;">
+                // Add title
+                const title = document.createElement('h3');
+                title.style.cssText = 'color: #BD9178; font-size: 20px; margin-bottom: 20px; font-family: Consolas, monospace;';
+                title.textContent = `${arch.order}. ${arch.title}`;
+                archSection.appendChild(title);
 
-                            <!-- Code Block (Left Column) -->
-                            <div style="flex: 1; min-width: 0;">
-                                <pre id="${arch.id}-code" style="background: #000000; border: 1px solid #3e3e42; border-radius: 8px; padding: 20px; font-family: 'Consolas', monospace; font-size: 14px; line-height: 1.6; overflow-x: auto; margin: 0;">
-<span class="vs-comment"># ${arch.description}</span>
-<span class="vs-keyword">class</span> <span class="vs-class">${arch.classDefinition.split('(')[0].split(' ')[1]}</span><span class="vs-bracket">(</span><span class="vs-variable">${arch.classDefinition.split('(')[1]}</span>
-${arch.codeSteps.map(step =>
-    `    <span class="code-step" data-step="${step.stepId}">${step.lines.map(line =>
-        line.startsWith('#') ? `<span class="vs-comment">${line}</span>` :
-        line.includes('class ') ? `<span class="vs-keyword">class</span> <span class="vs-class">${line.split('class ')[1]}</span>` :
-        line.includes('def ') ? `<span class="vs-keyword">def</span> <span class="vs-function">${line.split('def ')[1]}</span>` :
-        line.includes('for ') ? `<span class="vs-keyword">for</span> ${line.split('for ')[1].replace(/(\w+)/g, '<span class="vs-variable">$1</span>')}` :
-        line.includes('return ') ? `<span class="vs-keyword">return</span> ${line.split('return ')[1]}` :
-        line.includes(' = ') ? line.replace(/(\w+)\s*=/, '<span class="vs-variable">$1</span> <span class="vs-operator">=</span>') :
-        line
-    ).join('\n    ')}</span>`
-).join('\n\n')}
-                                </pre>
-                            </div>
+                // Create two-column layout
+                const layout = document.createElement('div');
+                layout.className = 'transformer-layout';
+                layout.style.cssText = 'display: flex; gap: 30px; align-items: flex-start;';
 
-                            <!-- Diagram (Right Column) -->
-                            <div style="flex: 1; min-width: 0;">
-                                <div style="display: flex; flex-direction: column; gap: 15px; background: #1a1a1a; border: 1px solid #3e3e42; border-radius: 8px; padding: 20px;">
-                                    ${arch.diagramBlocks.map(block => `
-                                        <div class="diagram-block" data-step="${block.stepId}" style="background: #2a2a2a; border: 1px solid #444; border-radius: 6px; padding: 15px; cursor: pointer; text-align: center; transition: all 0.3s ease;">
-                                            <div style="font-weight: bold; color: #E3D617; margin-bottom: 8px; font-size: 14px;">${block.label}</div>
-                                            <div style="color: #ffffff; font-size: 12px; line-height: 1.4;">${block.content}</div>
-                                            <div class="arrow-down" style="margin: 10px auto 0; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #666;"></div>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
+                // Create code block (left column)
+                const codeDiv = document.createElement('div');
+                codeDiv.style.cssText = 'flex: 1; min-width: 0;';
 
-                        </div>
-                    </div>
-                `;
+                const pre = document.createElement('pre');
+                pre.id = `${arch.id}-code`;
+                pre.style.cssText = 'background: #000000; border: 1px solid #3e3e42; border-radius: 8px; padding: 20px; font-family: Consolas, monospace; font-size: 14px; line-height: 1.6; overflow-x: auto; margin: 0;';
+
+                // Build code content simply
+                let codeContent = `<span class="vs-comment"># ${arch.description}</span>\n`;
+                codeContent += `<span class="vs-keyword">class</span> <span class="vs-class">${arch.classDefinition.split('(')[0].split(' ')[1]}</span><span class="vs-bracket">(</span><span class="vs-variable">${arch.classDefinition.split('(')[1]}</span>\n\n`;
+
+                arch.codeSteps.forEach(step => {
+                    codeContent += `    <span class="code-step" data-step="${step.stepId}">`;
+                    step.lines.forEach(line => {
+                        if (line.startsWith('#')) {
+                            codeContent += `<span class="vs-comment">${line}</span>\n    `;
+                        } else {
+                            codeContent += `${line}\n    `;
+                        }
+                    });
+                    codeContent += `</span>\n\n`;
+                });
+
+                pre.innerHTML = codeContent;
+                codeDiv.appendChild(pre);
+                layout.appendChild(codeDiv);
+
+                // Create diagram (right column)
+                const diagramDiv = document.createElement('div');
+                diagramDiv.style.cssText = 'flex: 1; min-width: 0;';
+
+                const diagramContainer = document.createElement('div');
+                diagramContainer.style.cssText = 'display: flex; flex-direction: column; gap: 15px; background: #1a1a1a; border: 1px solid #3e3e42; border-radius: 8px; padding: 20px;';
+
+                arch.diagramBlocks.forEach(block => {
+                    const blockDiv = document.createElement('div');
+                    blockDiv.className = 'diagram-block';
+                    blockDiv.setAttribute('data-step', block.stepId);
+                    blockDiv.style.cssText = 'background: #2a2a2a; border: 1px solid #444; border-radius: 6px; padding: 15px; cursor: pointer; text-align: center; transition: all 0.3s ease;';
+
+                    const label = document.createElement('div');
+                    label.style.cssText = 'font-weight: bold; color: #E3D617; margin-bottom: 8px; font-size: 14px;';
+                    label.textContent = block.label;
+
+                    const content = document.createElement('div');
+                    content.style.cssText = 'color: #ffffff; font-size: 12px; line-height: 1.4;';
+                    content.textContent = block.content;
+
+                    const arrow = document.createElement('div');
+                    arrow.className = 'arrow-down';
+                    arrow.style.cssText = 'margin: 10px auto 0; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #666;';
+
+                    blockDiv.appendChild(label);
+                    blockDiv.appendChild(content);
+                    blockDiv.appendChild(arrow);
+                    diagramContainer.appendChild(blockDiv);
+                });
+
+                diagramDiv.appendChild(diagramContainer);
+                layout.appendChild(diagramDiv);
+                archSection.appendChild(layout);
+                container.appendChild(archSection);
             });
-
-            container.innerHTML = html;
 
             // Initialize interactivity after rendering
             initializeArchitectureDiagram();
